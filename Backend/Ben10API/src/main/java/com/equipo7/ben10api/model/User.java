@@ -4,6 +4,7 @@ import com.equipo7.ben10api.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false) // Ensure passwords are mandatory
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -36,5 +40,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "alien_id")
     )
     private List<Alien> favoriteAliens;
+
+    // Utility method to hash password before saving
+//    public void hashPassword() {
+//        this.password = new BCryptPasswordEncoder().encode(this.password);
+//    }
 }
 

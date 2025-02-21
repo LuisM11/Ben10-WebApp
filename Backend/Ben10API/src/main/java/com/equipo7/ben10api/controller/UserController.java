@@ -1,7 +1,9 @@
 package com.equipo7.ben10api.controller;
 
+import com.equipo7.ben10api.dto.CreateUserDTO;
 import com.equipo7.ben10api.model.User;
 import com.equipo7.ben10api.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +31,9 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<String> createUser(@RequestBody @Valid CreateUserDTO createUserDTO) {
+        userService.createUser(createUserDTO);
+        return ResponseEntity.ok("User created successfully!");
     }
 
     @DeleteMapping("/{id}")
