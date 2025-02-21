@@ -30,8 +30,9 @@ public class AlienController {
     }
 
     @PostMapping
-    public Alien createAlien(@RequestBody Alien alien) {
-        return alienService.createAlien(alien);
+    public ResponseEntity<AlienDTO> createAlien(@RequestBody CreateAlienDTO createAlienDTO) {
+        AlienDTO createdAlien = alienService.createAlien(createAlienDTO);
+        return ResponseEntity.ok(createdAlien);
     }
 
     @DeleteMapping("/{id}")
