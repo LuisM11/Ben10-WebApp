@@ -38,7 +38,7 @@ function Selector({ aliens }) {
               <option value="">Selecciona un alien</option>
               {aliens.map((alien) => (
                 <option key={alien.id} value={alien.id}>
-                  {alien.nombre}
+                  {alien.name}
                 </option>
               ))}
             </select>
@@ -53,8 +53,8 @@ function Selector({ aliens }) {
           {selectedAlien && !transformedAlien && (
             <div className="text-center">
               <img
-                src={selectedAlien.imagen}
-                alt={selectedAlien.nombre}
+                src={selectedAlien.imageUrl}
+                alt={selectedAlien.name}
                 className="mx-auto h-32 w-32 rounded object-contain grayscale filter transition-all duration-500"
               />
               <p className="mt-2 text-gray-400">
@@ -67,8 +67,8 @@ function Selector({ aliens }) {
           {transformedAlien && (
             <div className="text-center">
               <img
-                src={transformedAlien.imagen}
-                alt={transformedAlien.nombre}
+                src={transformedAlien.imageUrl}
+                alt={transformedAlien.name}
                 className="mx-auto h-32 w-32 rounded border-4 border-green-500 object-contain transition-all duration-500"
               />
               <p className="mt-2 text-green-400">

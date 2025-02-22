@@ -15,11 +15,11 @@ function Favorite() {
           >
             <div className="flex items-center">
               <img
-                src={favorito.imagen} // ✅ Ahora está disponible
-                alt={favorito.nombre}
+                src={favorito.imageUrl} // ✅ Ahora está disponible
+                alt={favorito.name}
                 className="mr-4 h-12 w-12 rounded-lg object-cover"
               />
-              <span>{favorito.nombre}</span> {/* ✅ Ahora está disponible */}
+              <span>{favorito.name}</span> {/* ✅ Ahora está disponible */}
             </div>
             <button
               onClick={() => removeFromFavorites(favorito.favoritoId)}

@@ -1,123 +1,156 @@
 {
-  "aliensData": [
+  "aliens": [
     {
       "id": "1",
-      "nombre": "Bestia",
-      "descripcion": "Una criatura parecida a un felino con gran agilidad y sentido del olfato extremadamente desarrollado.",
-      "habilidades": [
-        "Velocidad",
-        "Agilidad",
-        "Sentido del olfato mejorado",
-        "Visión infrarroja"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/0eb500163729347.63ed23682ee02.jpg"
+      "name": "Fuego",
+      "description": "Alien de fuego con habilidades de fuego",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/cd251d163729347.63ed236830edc.jpg",
+      "stats": {
+        "speed": 80,
+        "strength": 70,
+        "agility": 90,
+        "intelligence": 60,
+        "durability": 75,
+        "energy": 100,
+        "combatSkill": 85
+      }
     },
     {
       "id": "2",
-      "nombre": "Cuatrobrazos",
-      "descripcion": "Un alien rojo de gran tamaño y fuerza con cuatro brazos que le permiten realizar ataques devastadores.",
-      "habilidades": [
-        "Super fuerza",
-        "Resistencia mejorada",
-        "Capacidad de salto"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/source/25b579163729347.63ed23682e37c.jpg"
+      "name": "XLR8",
+      "description": "Alien súper rápido con la capacidad de moverse a velocidades extremas",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/501e38163729347.63ed2364355b0.gif",
+      "stats": {
+        "speed": 100,
+        "strength": 50,
+        "agility": 100,
+        "intelligence": 70,
+        "durability": 60,
+        "energy": 90,
+        "combatSkill": 80
+      }
     },
     {
       "id": "3",
-      "nombre": "Materia Gris",
-      "descripcion": "Un pequeño alien con una inteligencia sobrehumana que le permite resolver problemas complejos y manipular tecnología.",
-      "habilidades": [
-        "Inteligencia avanzada",
-        "Manipulación de tecnología",
-        "Gran capacidad de trepar"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/97247b163729347.63ed23650ea8c.jpg"
+      "name": "Bestia",
+      "description": "Alien salvaje, parecido a un felino, con agilidad y sentidos aumentados",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/0eb500163729347.63ed23682ee02.jpg",
+      "stats": {
+        "speed": 75,
+        "strength": 80,
+        "agility": 95,
+        "intelligence": 30,
+        "durability": 85,
+        "energy": 50,
+        "combatSkill": 90
+      }
     },
     {
       "id": "4",
-      "nombre": "XLR8",
-      "descripcion": "Un velocista alienígena con la capacidad de moverse a velocidades extremas y reaccionar en fracciones de segundo.",
-      "habilidades": [
-        "Super velocidad",
-        "Reflejos mejorados",
-        "Capacidad de correr sobre el agua"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/501e38163729347.63ed2364355b0.gif"
+      "name": "Cuatro brazos",
+      "description": "Alien enorme de piel roja con cuatro brazos y gran fuerza",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/source/25b579163729347.63ed23682e37c.jpg",
+      "stats": {
+        "speed": 50,
+        "strength": 100,
+        "agility": 60,
+        "intelligence": 65,
+        "durability": 90,
+        "energy": 80,
+        "combatSkill": 85
+      }
     },
     {
       "id": "5",
-      "nombre": "Ultra-T",
-      "descripcion": "Un alien biomecánico con la capacidad de controlar e interactuar con tecnología avanzada.",
-      "habilidades": [
-        "Tecnopatía",
-        "Transformación de su cuerpo",
-        "Resistencia mejorada"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/a7870e163729347.63ed2363df75f.jpg"
+      "name": "Materia Gris",
+      "description": "Alien diminuto pero muy inteligente, con una capacidad excepcional para resolver problemas",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/97247b163729347.63ed23650ea8c.jpg",
+      "stats": {
+        "speed": 30,
+        "strength": 10,
+        "agility": 80,
+        "intelligence": 100,
+        "durability": 40,
+        "energy": 50,
+        "combatSkill": 40
+      }
     },
     {
       "id": "6",
-      "nombre": "Diamante",
-      "descripcion": "Un alien hecho de cristal extremadamente resistente capaz de lanzar proyectiles afilados y formar armas con su cuerpo.",
-      "habilidades": [
-        "Cuerpo de diamante",
-        "Creación de armas",
-        "Regeneración limitada"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/78030c163729347.63ed2363deb8f.jpg"
+      "name": "Ultra T",
+      "description": "Alien biomecánico con la capacidad de fusionar y mejorar la tecnología.",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/a7870e163729347.63ed2363df75f.jpg",
+      "stats": {
+        "speed": 70,
+        "strength": 60,
+        "agility": 80,
+        "intelligence": 90,
+        "durability": 70,
+        "energy": 95,
+        "combatSkill": 75
+      }
     },
     {
       "id": "7",
-      "nombre": "Insectoide",
-      "descripcion": "Un alien con aspecto de insecto que posee la habilidad de volar y escupir una sustancia pegajosa para atrapar enemigos.",
-      "habilidades": [
-        "Vuelo",
-        "Escupir baba pegajosa",
-        "Visión nocturna"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/c6e738163729347.63ed23650de06.jpg"
+      "name": "Diamante",
+      "description": "Alien cristalino con un cuerpo casi indestructible y la capacidad de lanzar proyectiles afilados.",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/78030c163729347.63ed2363deb8f.jpg",
+      "stats": {
+        "speed": 60,
+        "strength": 85,
+        "agility": 70,
+        "intelligence": 70,
+        "durability": 100,
+        "energy": 80,
+        "combatSkill": 85
+      }
     },
     {
       "id": "8",
-      "nombre": "Acuático",
-      "descripcion": "Un alien anfibio con la capacidad de respirar bajo el agua y moverse con gran velocidad en el océano.",
-      "habilidades": [
-        "Respiración bajo el agua",
-        "Nado a alta velocidad",
-        "Hidroquinesis limitada"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/85b7d5163729347.63ed236435f56.gif"
+      "name": "Insectoide",
+      "description": "Alien insectoide con la capacidad de volar y escupir una sustancia pegajosa.",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/c6e738163729347.63ed23650de06.jpg",
+      "stats": {
+        "speed": 85,
+        "strength": 50,
+        "agility": 95,
+        "intelligence": 60,
+        "durability": 65,
+        "energy": 70,
+        "combatSkill": 80
+      }
     },
     {
       "id": "9",
-      "nombre": "Cannonbolt",
-      "descripcion": "Un alien con un caparazón duro capaz de enrollarse en una bola y rodar a altas velocidades para atacar a sus enemigos.",
-      "habilidades": [
-        "Caparazón resistente",
-        "Ataque en bola",
-        "Gran resistencia al daño"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/685588163729347.63ed23648fd56.jpg"
+      "name": "Acuático",
+      "description": "Alien acuático con poderosas mandíbulas y la capacidad de respirar bajo el agua.",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/85b7d5163729347.63ed236435f56.gif",
+      "stats": {
+        "speed": 70,
+        "strength": 75,
+        "agility": 80,
+        "intelligence": 65,
+        "durability": 75,
+        "energy": 60,
+        "combatSkill": 70
+      }
     },
     {
       "id": "10",
-      "nombre": "Fuego",
-      "descripcion": "Un alien hecho de fuego viviente que puede lanzar llamas y soportar temperaturas extremas.",
-      "habilidades": [
-        "Generación y control del fuego",
-        "Vuelo con propulsión",
-        "Resistencia al calor extremo"
-      ],
-      "imagen": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/cd251d163729347.63ed236830edc.jpg"
+      "name": "Cannonbolt",
+      "description": "Alien duradero y rodante que puede enroscarse en una bola para realizar ataques giratorios a gran velocidad.",
+      "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/685588163729347.63ed23648fd56.jpg",
+      "stats": {
+        "speed": 60,
+        "strength": 85,
+        "agility": 55,
+        "intelligence": 55,
+        "durability": 95,
+        "energy": 75,
+        "combatSkill": 80
+      }
     }
   ],
   "transformaciones": [],
-  "favoritos": [
-    {
-      "id": "84c8",
-      "usuario_id": 1,
-      "alien_id": "1"
-    }
-  ]
+  "favoritos": []
 }

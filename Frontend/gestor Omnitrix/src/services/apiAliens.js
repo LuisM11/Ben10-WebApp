@@ -1,7 +1,7 @@
 const API_URL = "http://localhost:9000";
 
 export async function getAliens() {
-  const res = await fetch(`${API_URL}/aliensData`);
+  const res = await fetch(`${API_URL}/aliens`);
 
   if (!res.ok) throw new Error("Failed to fetch aliens");
 
