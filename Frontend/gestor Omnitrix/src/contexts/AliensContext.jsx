@@ -79,7 +79,7 @@ function AliensProvider({ children }) {
       if (Number(id) === currentAlien.id) return;
 
       try {
-        const res = await fetch(`${BASE_URL}/aliensData/${id}`);
+        const res = await fetch(`${BASE_URL}/aliens/${id}`);
         const data = await res.json();
         dispatch({ type: "alien/loaded", payload: data });
       } catch {
@@ -147,7 +147,7 @@ function AliensProvider({ children }) {
         if (data.length > 0) {
           const transformacion = data[0]; // Tomar la primera transformación activa
           const alienRes = await fetch(
-            `http://localhost:9000/aliensData/${transformacion.alien_id}`,
+            `http://localhost:9000/aliens/${transformacion.alien_id}`,
           );
           const alienData = await alienRes.json();
 
@@ -243,8 +243,8 @@ function AliensProvider({ children }) {
           favoritoId: data.id,
           usuario_id: usuarioId,
           alien_id: alien.id,
-          nombre: alien.nombre, // ✅ Añadir el nombre del alien
-          imagen: alien.imagen, // ✅ Añadir la imagen del alien
+          name: alien.name, // ✅ Añadir el nombre del alien
+          imageUrl: alien.imageUrl, // ✅ Añadir la imagen del alien
         },
       });
     } catch (error) {
@@ -310,7 +310,7 @@ function useAliens() {
   if (!context) {
     throw new Error("useAliens must be used within an AliensProvider");
   }
-  console.log(context);
+  // console.log(context);
   return context;
 }
 

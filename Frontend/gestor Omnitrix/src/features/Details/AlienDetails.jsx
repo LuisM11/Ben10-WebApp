@@ -18,8 +18,8 @@ function AlienDetails() {
   //     return <p className="text-center text-white">Cargando...</p>;
   //   }
 
-  const { nombre, descripcion, habilidades, imagen } = currentAlien;
-  // console.log(currentAlien);
+  const { name, description, stats, imageUrl } = currentAlien;
+  console.log(currentAlien);
 
   return (
     <div className="mx-auto max-w-4xl rounded-lg bg-gray-800 p-6 text-white shadow-md">
@@ -28,23 +28,25 @@ function AlienDetails() {
         {/* Imagen del alien */}
         <div className="flex w-1/3 items-center justify-center">
           <img
-            src={imagen}
-            alt={nombre}
+            src={imageUrl}
+            alt={name}
             className="h-auto w-full rounded-lg shadow-lg"
           />
         </div>
 
         {/* Información del alien */}
         <div className="w-2/3 pl-6">
-          <h1 className="mb-2 text-3xl font-bold">{nombre}</h1>
-          <p className="text-sm text-gray-300">{descripcion}</p>
+          <h1 className="mb-2 text-3xl font-bold">{name}</h1>
+          <p className="text-sm text-gray-300">{description}</p>
 
           {/* Habilidades */}
           <div className="mt-4">
             <h2 className="text-lg font-semibold">Habilidades</h2>
             <ul className="list-inside list-disc text-gray-400">
-              {habilidades?.map((habilidad, index) => (
-                <li key={index}>{habilidad}</li>
+              {Object.entries(stats || {})?.map(([key, value], index) => (
+                <li key={index}>
+                  {key}: {value}
+                </li>
               ))}
             </ul>
           </div>
