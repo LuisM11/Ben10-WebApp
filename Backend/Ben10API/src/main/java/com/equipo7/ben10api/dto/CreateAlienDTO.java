@@ -1,6 +1,5 @@
-package com.equipo7.ben10api.controller;
+package com.equipo7.ben10api.dto;
 
-import com.equipo7.ben10api.dto.StatsDTO;
 import lombok.Getter;
 
 @Getter
