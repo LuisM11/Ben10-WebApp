@@ -1,5 +1,6 @@
 package com.equipo7.ben10api.controller;
 
+import com.equipo7.ben10api.dto.AlienDTO;
 import com.equipo7.ben10api.dto.CreateUserDTO;
 import com.equipo7.ben10api.model.User;
 import com.equipo7.ben10api.service.UserService;
@@ -42,9 +43,10 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/{id}/favorites")
-//    public List<FavoriteAlienDTO> getFavoriteAliens(@PathVariable Long id) {
-//        return userService.getFavoriteAliens(id);
-//    }
+    @PostMapping("/ben10/favorites/{alienId}")
+    public ResponseEntity<List<AlienDTO>> addAlienToBen10Favorites(@PathVariable Long alienId) {
+        List<AlienDTO> updatedFavorites = userService.addAlienToBen10Favorites(alienId);
+        return ResponseEntity.ok(updatedFavorites);
+    }
 }
 
