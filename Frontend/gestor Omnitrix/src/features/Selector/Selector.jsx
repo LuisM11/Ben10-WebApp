@@ -43,8 +43,7 @@ function Selector({ aliens }) {
               ))}
             </select>
           </div>
-
-          {selectedAlien && <ButtonTransform selectedAlien={selectedAlien} />}
+          {selectedAlien && ! transformedAlien && (<ButtonTransform selectedAlien={selectedAlien} />)}
         </div>
 
         {/* Columna derecha: imagen seleccionada o transformada */}
