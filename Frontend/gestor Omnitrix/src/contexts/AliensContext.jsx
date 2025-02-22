@@ -6,7 +6,7 @@ import {
   useEffect,
 } from "react";
 
-const BASE_URL = "http://localhost:9000";
+const BASE_URL = "http://localhost:8080";
 const AliensContext = createContext();
 
 const initialState = {
@@ -49,7 +49,7 @@ function reducer(state, action) {
       return {
         ...state,
         favoritos: state.favoritos.filter(
-          (fav) => fav.favoritoId !== action.payload,
+          (fav) => fav.alien_id !== action.payload,
         ),
       };
 
@@ -91,148 +91,166 @@ function AliensProvider({ children }) {
     },
     [currentAlien.id],
   );
+  // TODO Descomentar cuando transformaciones estén listas
 
-  const transformAlien = async (alien) => {
-    try {
-      // 1️⃣ Primero, verificamos si ya hay una transformación activa
-      const resCheck = await fetch("http://localhost:9000/transformaciones");
-      const dataCheck = await resCheck.json();
+  // const transformAlien = async (alien) => {
+  //   try {
+  //     // 1️⃣ Primero, verificamos si ya hay una transformación activa
+  //     const resCheck = await fetch(`${BASE_URL}/transformaciones`);
+  //     const dataCheck = await resCheck.json();
 
-      if (dataCheck.length > 0) {
-        console.warn(
-          "⚠ Ya hay una transformación activa. No puedes iniciar otra.",
-        );
-        return; // ⛔ Evita que se cree otra transformación
-      }
+  //     if (dataCheck.length > 0) {
+  //       console.warn(
+  //         "⚠ Ya hay una transformación activa. No puedes iniciar otra.",
+  //       );
+  //       return; // ⛔ Evita que se cree otra transformación
+  //     }
 
-      // 2️⃣ Generar un tiempo de transformación aleatorio (30 a 90 segundos)
-      const tiempoTransformacion = alien.transformationDurationSeconds;
+  //     // 2️⃣ Generar un tiempo de transformación aleatorio (30 a 90 segundos)
+  //     const tiempoTransformacion = alien.transformationDurationSeconds;
 
-      const nuevaTransformacion = {
-        alien_id: alien.id,
-        tiempoTransformacion,
-        estado: true, // Indica que la transformación está activa
-      };
+  //     const nuevaTransformacion = {
+  //       alien_id: alien.id,
+  //       tiempoTransformacion,
+  //       estado: true, // Indica que la transformación está activa
+  //     };
 
-      // 3️⃣ Enviamos la transformación a JSON Server
-      const res = await fetch("http://localhost:9000/transformaciones", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevaTransformacion),
-      });
+  //     // 3️⃣ Enviamos la transformación a JSON Server
+  //     const res = await fetch(`${BASE_URL}/transformaciones`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(nuevaTransformacion),
+  //     });
 
-      if (!res.ok) throw new Error("Error al transformar");
+  //     if (!res.ok) throw new Error("Error al transformar");
 
-      const data = await res.json(); // JSON Server devuelve el objeto creado con un ID único
+  //     const data = await res.json(); // JSON Server devuelve el objeto creado con un ID único
 
-      dispatch({
-        type: "alien/transformed",
-        payload: { ...alien, tiempoTransformacion, transformacionId: data.id },
-      });
-    } catch (error) {
-      console.error("Error al transformar el alien:", error);
-    }
-  };
+  //     dispatch({
+  //       type: "alien/transformed",
+  //       payload: { ...alien, tiempoTransformacion, transformacionId: data.id },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error al transformar el alien:", error);
+  //   }
+  // };
 
   // const resetTransformation = () => {
   //   dispatch({ type: "alien/resetTransformation" });
   // };
 
-  useEffect(() => {
-    const fetchTransformacionActiva = async () => {
-      try {
-        const res = await fetch("http://localhost:9000/transformaciones");
-        const data = await res.json();
+  // TODO Descomentar cuando transformaciones estén listas
 
-        if (data.length > 0) {
-          const transformacion = data[0]; // Tomar la primera transformación activa
-          const alienRes = await fetch(
-            `http://localhost:9000/aliens/${transformacion.alien_id}`,
-          );
-          const alienData = await alienRes.json();
+  // useEffect(() => {
+  //   const fetchTransformacionActiva = async () => {
+  //     try {
+  //       const res = await fetch(`${BASE_URL}/transformaciones`);
+  //       const data = await res.json();
 
-          dispatch({
-            type: "alien/transformed",
-            payload: {
-              ...alienData,
-              tiempoTransformacion: transformacion.tiempoTransformacion,
-            },
-          });
-        }
-      } catch (error) {
-        console.error("Error al obtener la transformación activa");
-      }
-    };
+  //       if (data.length > 0) {
+  //         const transformacion = data[0]; // Tomar la primera transformación activa
+  //         const alienRes = await fetch(
+  //           `http://localhost:9000/aliens/${transformacion.alien_id}`,
+  //         );
+  //         const alienData = await alienRes.json();
 
-    fetchTransformacionActiva();
-  }, []);
+  //         dispatch({
+  //           type: "alien/transformed",
+  //           payload: {
+  //             ...alienData,
+  //             tiempoTransformacion: transformacion.tiempoTransformacion,
+  //           },
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error al obtener la transformación activa");
+  //     }
+  //   };
 
-  const resetTransformation = async () => {
-    try {
-      // Obtener la transformación activa
-      const res = await fetch("http://localhost:9000/transformaciones");
-      const data = await res.json();
+  //   fetchTransformacionActiva();
+  // }, []);
 
-      if (data.length === 0) {
-        console.warn("⚠ No hay transformación activa para eliminar.");
-        return;
-      }
+  // TODO Descomentar cuando transformaciones estén listas
 
-      const transformacionId = data[0].id; // Tomamos el ID de la primera transformación activa
+  // const resetTransformation = async () => {
+  //   try {
+  //     // Obtener la transformación activa
+  //     const res = await fetch("http://localhost:9000/transformaciones");
+  //     const data = await res.json();
 
-      // Eliminar la transformación correcta
-      const deleteRes = await fetch(
-        `http://localhost:9000/transformaciones/${transformacionId}`,
-        {
-          method: "DELETE",
-        },
-      );
+  //     if (data.length === 0) {
+  //       console.warn("⚠ No hay transformación activa para eliminar.");
+  //       return;
+  //     }
 
-      if (!deleteRes.ok) throw new Error("Error al detener la transformación");
+  //     const transformacionId = data[0].id; // Tomamos el ID de la primera transformación activa
 
-      dispatch({ type: "alien/resetTransformation" });
-    } catch (error) {
-      console.error("Error al detener la transformación:", error);
-    }
-  };
+  //     // Eliminar la transformación correcta
+  //     const deleteRes = await fetch(
+  //       `http://localhost:9000/transformaciones/${transformacionId}`,
+  //       {
+  //         method: "DELETE",
+  //       },
+  //     );
 
-  useEffect(() => {
-    if (transformedAlien && remainingTime > 0) {
-      const timer = setInterval(() => {
-        dispatch({ type: "timer/update", payload: remainingTime - 1 });
-      }, 1000);
+  //     if (!deleteRes.ok) throw new Error("Error al detener la transformación");
 
-      return () => clearInterval(timer);
-    }
+  //     dispatch({ type: "alien/resetTransformation" });
+  //   } catch (error) {
+  //     console.error("Error al detener la transformación:", error);
+  //   }
+  // };
 
-    if (remainingTime === 0 && transformedAlien) {
-      resetTransformation(); // Si el tiempo llega a 0, se detiene automáticamente
-    }
-  }, [remainingTime, transformedAlien]);
+  // TODO Descomentar cuando transformaciones estén listas
+
+  // useEffect(() => {
+  //   if (transformedAlien && remainingTime > 0) {
+  //     const timer = setInterval(() => {
+  //       dispatch({ type: "timer/update", payload: remainingTime - 1 });
+  //     }, 1000);
+
+  //     return () => clearInterval(timer);
+  //   }
+
+  //   if (remainingTime === 0 && transformedAlien) {
+  //     resetTransformation(); // Si el tiempo llega a 0, se detiene automáticamente
+  //   }
+  // }, [remainingTime, transformedAlien]);
 
   const addToFavorites = async (alien, usuarioId) => {
     try {
-      const resCheck = await fetch(
-        `http://localhost:9000/favoritos?usuario_id=${usuarioId}&alien_id=${alien.id}`,
-      );
-      const dataCheck = await resCheck.json();
+      // const resCheck = await fetch(
+      //   `${BASE_URL}/users/ben10/favorites/${alien.id}`,
+      // );
+      // const dataCheck = await resCheck.json();
 
-      if (dataCheck.length > 0) {
-        console.warn("⚠ El alien ya está en favoritos.");
-        return;
-      }
+      // if (dataCheck.length > 0) {
+      //   console.warn("⚠ El alien ya está en favoritos.");
+      //   return;
+      // }
 
-      const nuevoFavorito = {};
+      console.log("alien", alien);
 
-      const res = await fetch("http://localhost:9000/favoritos", {
+      // const nuevoFavorito = {
+      //   id: alien.id,
+      //   name: alien.name,
+      //   description: alien.description,
+      //   imageUrl: alien.imageUrl,
+      // };
+
+      const res = await fetch(`${BASE_URL}/users/ben10/favorites/${alien.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevoFavorito),
+
+        // body: JSON.stringify(nuevoFavorito),
       });
+
+      console.log(res);
 
       if (!res.ok) throw new Error("Error al agregar a favoritos");
 
       const data = await res.json(); // ✅ Obtenemos el objeto con su ID único
+      console.log("data", data);
 
       dispatch({
         type: "favoritos/agregado",
@@ -249,15 +267,16 @@ function AliensProvider({ children }) {
     }
   };
 
-  const removeFromFavorites = async (favoritoId) => {
+  const removeFromFavorites = async (alien_id) => {
+    //2
     try {
-      const res = await fetch(`http://localhost:9000/favoritos/${favoritoId}`, {
+      const res = await fetch(`${BASE_URL}/users/ben10/favorites/${alien_id}`, {
         method: "DELETE",
       });
 
       if (!res.ok) throw new Error("Error al eliminar de favoritos");
 
-      dispatch({ type: "favoritos/eliminado", payload: favoritoId });
+      dispatch({ type: "favoritos/eliminado", payload: alien_id });
     } catch (error) {
       console.error("Error al eliminar de favoritos:", error);
     }
@@ -297,58 +316,60 @@ function AliensProvider({ children }) {
   //   fetchFavoritos();
   // }, []);
 
-  const fetchBen10Favorites = async () => {
-    try {
-      const favRes = await fetch(`${BASE_URL}/favoritos?usuario_id=1`);
-      const favData = await favRes.json();
+  // TODO Descomentar cuando transformaciones estén listas
 
-      if (favData.length === 0) {
-        console.warn("⚠ Ben 10 no tiene favoritos.");
-        dispatch({ type: "favoritos/cargados", payload: [] });
-        return;
-      }
+  // const fetchBen10Favorites = async () => {
+  //   try {
+  //     const favRes = await fetch(`${BASE_URL}/favoritos?usuario_id=1`);
+  //     const favData = await favRes.json();
 
-      const alienIds = favData.map((fav) => fav.id);
-      const alienPromises = alienIds.map((id) =>
-        fetch(`${BASE_URL}/aliens/${id}`).then((res) => res.json()),
-      );
+  //     if (favData.length === 0) {
+  //       console.warn("⚠ Ben 10 no tiene favoritos.");
+  //       dispatch({ type: "favoritos/cargados", payload: [] });
+  //       return;
+  //     }
 
-      const aliensData = await Promise.all(alienPromises);
-      dispatch({ type: "favoritos/cargados", payload: aliensData });
-    } catch (error) {
-      console.error("Error al obtener los favoritos de Ben 10:", error);
-    }
-  };
+  //     const alienIds = favData.map((fav) => fav.id);
+  //     const alienPromises = alienIds.map((id) =>
+  //       fetch(`${BASE_URL}/aliens/${id}`).then((res) => res.json()),
+  //     );
+
+  //     const aliensData = await Promise.all(alienPromises);
+  //     dispatch({ type: "favoritos/cargados", payload: aliensData });
+  //   } catch (error) {
+  //     console.error("Error al obtener los favoritos de Ben 10:", error);
+  //   }
+  // };
 
   // ⬇️ Aquí colocamos el useEffect
-  useEffect(() => {
-    fetchBen10Favorites();
-  }, []);
+  // useEffect(() => {
+  //   fetchBen10Favorites();
+  // }, []);
 
-  const fetchBen10User = async () => {
-    try {
-      const res = await fetch(`${BASE_URL}/users?username=ben10`);
-      const data = await res.json();
+  // const fetchBen10User = async () => {
+  //   try {
+  //     const res = await fetch(`${BASE_URL}/users?username=ben10`);
+  //     const data = await res.json();
 
-      if (data.length === 0) {
-        console.error("⚠ Usuario Ben 10 no encontrado.");
-        return null;
-      }
+  //     if (data.length === 0) {
+  //       console.error("⚠ Usuario Ben 10 no encontrado.");
+  //       return null;
+  //     }
 
-      return data[0]; // Retornamos solo el primer usuario encontrado
-    } catch (error) {
-      console.error("Error al obtener el usuario Ben 10:", error);
-      return null;
-    }
-  };
+  //     return data[0]; // Retornamos solo el primer usuario encontrado
+  //   } catch (error) {
+  //     console.error("Error al obtener el usuario Ben 10:", error);
+  //     return null;
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchBen10User().then((user) => {
-      if (user) {
-        console.log("Usuario cargado:", user);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   fetchBen10User().then((user) => {
+  //     if (user) {
+  //       console.log("Usuario cargado:", user);
+  //     }
+  //   });
+  // }, []);
 
   return (
     <AliensContext.Provider
@@ -357,8 +378,8 @@ function AliensProvider({ children }) {
         getAlien,
         transformedAlien,
         remainingTime,
-        transformAlien,
-        resetTransformation,
+        // transformAlien,
+        // resetTransformation,
         favoritos, // ✅ Exponer favoritos en el contexto
         addToFavorites, // ✅ Exponer la función para agregar a favoritos
         removeFromFavorites, // ✅ Exponer la función para eliminar de favoritos

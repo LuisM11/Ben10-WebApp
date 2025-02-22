@@ -8,6 +8,7 @@ function AlienItem({ alien }) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
+    console.log(favoritos);
     const favoritoEncontrado = favoritos.some(
       (fav) => fav.alien_id === alien.id,
     );
