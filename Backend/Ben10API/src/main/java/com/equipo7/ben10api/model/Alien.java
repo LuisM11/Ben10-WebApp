@@ -19,7 +19,11 @@ public class Alien {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(nullable = false)
     private String imageUrl;
+
+    @Column(nullable = false)
+    private int transformationDuration;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "stats_id", referencedColumnName = "id")

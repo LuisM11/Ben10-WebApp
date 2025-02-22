@@ -39,6 +39,7 @@ public class AlienService {
         alien.setName(createAlienDTO.getName());
         alien.setDescription(createAlienDTO.getDescription());
         alien.setImageUrl(createAlienDTO.getImageUrl());
+        alien.setTransformationDuration(createAlienDTO.getTransformationDuration());
 
         Stats stats = new Stats();
         stats.setSpeed(createAlienDTO.getStats().getSpeed());
@@ -62,7 +63,7 @@ public class AlienService {
                 savedStats.getIntelligence(), savedStats.getDurability(),
                 savedStats.getEnergy(), savedStats.getCombatSkill());
 
-        return new AlienDTO(savedAlien.getId(), savedAlien.getName(), savedAlien.getDescription(), savedAlien.getImageUrl(), statsDTO);
+        return new AlienDTO(savedAlien.getId(), savedAlien.getName(), savedAlien.getDescription(), savedAlien.getImageUrl(), savedAlien.getTransformationDuration(), statsDTO);
     }
 
     public void deleteAlien(Long id) {
@@ -81,6 +82,6 @@ public class AlienService {
                 alien.getStats().getCombatSkill()
         );
 
-        return new AlienDTO(alien.getId(), alien.getName(), alien.getDescription(), alien.getImageUrl(), statsDTO);
+        return new AlienDTO(alien.getId(), alien.getName(), alien.getDescription(), alien.getImageUrl(), alien.getTransformationDuration(), statsDTO);
     }
 }
