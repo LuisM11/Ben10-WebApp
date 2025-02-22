@@ -1,6 +1,8 @@
 package com.equipo7.ben10api.model;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Duration;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @Table(name = "transformations")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +34,9 @@ public class Transformation {
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    @Transient
-    public Duration getDuration() {
-        return Duration.between(initDate, endDate);
-    }
+    @Column(nullable = false)
+    private boolean active;
+
+
 }
 
