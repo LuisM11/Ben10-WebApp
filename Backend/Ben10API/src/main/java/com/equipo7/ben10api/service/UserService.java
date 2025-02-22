@@ -1,14 +1,11 @@
 package com.equipo7.ben10api.service;
 
-import com.equipo7.ben10api.controller.UserDTO;
+import com.equipo7.ben10api.dto.UserDTO;
 import com.equipo7.ben10api.dto.AlienDTO;
 import com.equipo7.ben10api.dto.CreateUserDTO;
 import com.equipo7.ben10api.dto.StatsDTO;
 import com.equipo7.ben10api.enums.UserType;
-import com.equipo7.ben10api.exception.AlienAlreadyFavoritedException;
-import com.equipo7.ben10api.exception.AlienNotFoundException;
-import com.equipo7.ben10api.exception.Ben10AlreadyExistsException;
-import com.equipo7.ben10api.exception.Ben10NotFoundException;
+import com.equipo7.ben10api.exception.*;
 import com.equipo7.ben10api.model.Alien;
 import com.equipo7.ben10api.model.User;
 import com.equipo7.ben10api.repository.AlienRepository;
@@ -78,6 +75,32 @@ public class UserService {
         }
 
         ben10.addFavorite(alien);
+        return getAlienDTOS(ben10);
+    }
+
+    public List<AlienDTO> removeAlienFromBen10Favorites(Long alienId) {
+        User ben10 = userRepository.findByUserType(UserType.BEN_10)
+                .orElseThrow(() -> new Ben10NotFoundException("Ben 10 user not found!"));
+
+        Alien alien = alienRepository.findById(alienId)
+                .orElseThrow(() -> new AlienNotFoundException("Alien not found!"));
+
+        if (!ben10.getFavorites().contains(alien)) {
+            throw new AlienNotFavoritedException("This alien is not in Ben 10's favorites!");
+        }
+
+        ben10.removeFavorite(alien);
+        return getAlienDTOS(ben10);
+    }
+
+    public List<AlienDTO> getBen10Favorites() {
+        User ben10 = userRepository.findByUserType(UserType.BEN_10)
+                .orElseThrow(() -> new Ben10NotFoundException("Ben 10 user not found!"));
+
+        return getAlienDTOS(ben10);
+    }
+
+    private List<AlienDTO> getAlienDTOS(User ben10) {
         userRepository.save(ben10);
 
         return ben10.getFavorites().stream()
@@ -87,7 +110,7 @@ public class UserService {
                         a.getDescription(),
                         a.getImageUrl(),
                         a.getTransformationDuration(),
-                        (a.getStats() != null) ? new StatsDTO( // ✅ Convert Stats to StatsDTO
+                        (a.getStats() != null) ? new StatsDTO(
                                 a.getStats().getSpeed(),
                                 a.getStats().getStrength(),
                                 a.getStats().getAgility(),
@@ -96,7 +119,6 @@ public class UserService {
                                 a.getStats().getEnergy(),
                                 a.getStats().getCombatSkill()
                         ) : null
-
                 ))
                 .collect(Collectors.toList());
     }

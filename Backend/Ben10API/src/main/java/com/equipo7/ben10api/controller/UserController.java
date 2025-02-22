@@ -2,9 +2,9 @@ package com.equipo7.ben10api.controller;
 
 import com.equipo7.ben10api.dto.AlienDTO;
 import com.equipo7.ben10api.dto.CreateUserDTO;
+import com.equipo7.ben10api.dto.UserDTO;
 import com.equipo7.ben10api.model.User;
 import com.equipo7.ben10api.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +37,17 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    //BEN10-Related Endpoints
+    @GetMapping("/ben10/favorites")
+    public ResponseEntity<List<AlienDTO>> getBen10Favorites() {
+        List<AlienDTO> favorites = userService.getBen10Favorites();
+        return ResponseEntity.ok(favorites);
+    }
+
+    @DeleteMapping("/ben10/favorites/{alienId}")
+    public ResponseEntity<List<AlienDTO>> removeAlienFromBen10Favorites(@PathVariable Long alienId) {
+        List<AlienDTO> updatedFavorites = userService.removeAlienFromBen10Favorites(alienId);
+        return ResponseEntity.ok(updatedFavorites);
     }
 
     @PostMapping("/ben10/favorites/{alienId}")

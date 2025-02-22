@@ -1,7 +1,7 @@
 package com.equipo7.ben10api.controller;
 
 import com.equipo7.ben10api.dto.AlienDTO;
-import com.equipo7.ben10api.model.Alien;
+import com.equipo7.ben10api.dto.CreateAlienDTO;
 import com.equipo7.ben10api.service.AlienService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

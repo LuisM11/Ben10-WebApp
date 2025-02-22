@@ -1,6 +1,6 @@
 package com.equipo7.ben10api.service;
 
-import com.equipo7.ben10api.controller.CreateAlienDTO;
+import com.equipo7.ben10api.dto.CreateAlienDTO;
 import com.equipo7.ben10api.dto.AlienDTO;
 import com.equipo7.ben10api.dto.StatsDTO;
 import com.equipo7.ben10api.model.Alien;
