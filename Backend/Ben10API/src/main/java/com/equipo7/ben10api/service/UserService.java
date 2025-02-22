@@ -1,7 +1,9 @@
 package com.equipo7.ben10api.service;
 
+import com.equipo7.ben10api.controller.UserDTO;
 import com.equipo7.ben10api.dto.CreateUserDTO;
 import com.equipo7.ben10api.enums.UserType;
+import com.equipo7.ben10api.exception.Ben10AlreadyExistsException;
 import com.equipo7.ben10api.model.User;
 import com.equipo7.ben10api.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,23 +34,23 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public User createUser(CreateUserDTO createUserDTO) {
-        // Check if the role is BEN_10 and one already exists
+    public UserDTO createUser(CreateUserDTO createUserDTO) {
+        // Ensure only one BEN_10 user exists
         if (createUserDTO.getUserType().equals(UserType.BEN_10)) {
             if (userRepository.existsByUserType(UserType.BEN_10)) {
-                throw new RuntimeException("Only one Ben 10 can exist!");
+                throw new Ben10AlreadyExistsException("Only one Ben 10 can exist!");
             }
         }
 
         User user = new User();
         user.setUsername(createUserDTO.getUsername());
         user.setUserType(createUserDTO.getUserType());
+        user.setPassword(passwordEncoder.encode(createUserDTO.getPassword())); // Hash password
 
-        // ✅ Hash the password before saving
-        String hashedPassword = passwordEncoder.encode(createUserDTO.getPassword());
-        user.setPassword(hashedPassword);
+        User savedUser = userRepository.save(user);
 
-        return userRepository.save(user);
+        // Return DTO (excluding password)
+        return new UserDTO(savedUser.getId(), savedUser.getUsername(), savedUser.getUserType());
     }
     public boolean verifyPassword(String rawPassword, String hashedPassword) {
         return passwordEncoder.matches(rawPassword, hashedPassword);
