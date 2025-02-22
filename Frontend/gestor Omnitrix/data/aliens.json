@@ -162,21 +162,5 @@
     }
   ],
   "transformaciones": [],
-  "favoritos": [
-    {
-      "id": "b32d"
-    }
-  ],
-  "users": [
-    {
-      "id": "1",
-      "username": "ben10",
-      "userType": "BEN_10"
-    },
-    {
-      "id": "2",
-      "username": "gwen",
-      "userType": "COMMON"
-    }
-  ]
+  "favoritos": []
 }
