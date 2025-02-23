@@ -4,70 +4,86 @@ import { useAliens } from "../../contexts/AliensContext";
 import ButtonTransform from "../../UI/ButtonTransform";
 import ButtonStopTransform from "../../UI/ButtonStopTransform";
 import TransformationTimer from "../Transformation/TransformationTimer";
+import FavoriteLogicButton from "../../UI/FavoriteLogicButton";
 
 function AlienDetails() {
   const { id } = useParams();
   const { getAlien, currentAlien, transformedAlien } = useAliens();
-  console.log(transformedAlien);
-  // console.log(id);
+
   useEffect(() => {
-    // console.log("object");
     getAlien(id);
   }, [id, getAlien]);
-  //   if (!currentAlien) {
-  //     return <p className="text-center text-white">Cargando...</p>;
-  //   }
 
   const { name, description, stats, imageUrl } = currentAlien;
-  console.log(currentAlien);
 
   return (
-    <div className="mx-auto max-w-4xl rounded-lg bg-gray-800 p-6 text-white shadow-md">
-      {/* Contenedor principal */}
+    <div className="my-10 rounded bg-gray-800 p-6 text-white">
+      {/* Contenedor principal con imagen a la izquierda y detalles a la derecha */}
       <div className="flex">
         {/* Imagen del alien */}
-        <div className="flex w-1/3 items-center justify-center">
+        <div className="w-1/3">
           <img
             src={imageUrl}
             alt={name}
             className="h-auto w-full rounded-lg shadow-lg"
           />
-        </div>
 
-        {/* Información del alien */}
-        <div className="w-2/3 pl-6">
-          <h1 className="mb-2 text-3xl font-bold">{name}</h1>
-          <p className="text-sm text-gray-300">{description}</p>
-
-          {/* Habilidades */}
+          {/* Habilidades debajo de la imagen */}
           <div className="mt-4">
             <h2 className="text-lg font-semibold">Habilidades</h2>
             <ul className="list-inside list-disc text-gray-400">
-              {Object.entries(stats || {})?.map(([key, value], index) => (
+              {Object.entries(stats || {}).map(([key, value], index) => (
                 <li key={index}>
                   {key}: {value}
                 </li>
               ))}
             </ul>
           </div>
+        </div>
 
-          {/* Botón de Transformación y Favoritos */}
+        {/* Información del alien y transformación */}
+        <div className="w-2/3 pl-6">
+          <h1 className="mb-2 text-3xl font-bold">{name}</h1>
+          <p className="text-sm text-gray-300">
+            {description} Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Modi, voluptas sit vero unde quo voluptatem ex laboriosam
+            neque doloribus earum, quia sequi pariatur distinctio aperiam
+            dolorum nobis cumque delectus voluptatum? Lorem, ipsum dolor sit
+            amet consectetur adipisicing elit. Quibusdam, doloribus soluta. Quae
+            esse a totam doloremque perferendis sunt fugit ipsa veniam mollitia
+            quos. Consequuntur architecto, necessitatibus quis officia officiis
+            nostrum?
+          </p>
+
+          {/* Sección de transformación */}
           <div className="mt-6 flex items-center">
             <ButtonTransform selectedAlien={currentAlien} />
             <ButtonStopTransform />
-            <TransformationTimer />
-            <button className="ml-4 rounded-lg border border-gray-500 bg-transparent px-4 py-2 text-white hover:bg-gray-700">
-              ❤️
-            </button>
-            <p>{` Alien actual: ${transformedAlien?.nombre}`}</p>
+
+            {/* Temporizador al lado de la lista de habilidades */}
+            <div className="ml-4">
+              <TransformationTimer />
+            </div>
+
+            {/* Favoritos */}
+            <FavoriteLogicButton alien={currentAlien} />
+
+            {/* Alien actual */}
+            <p className="ml-4">{`Alien actual: ${transformedAlien?.name || "Ninguno"}`}</p>
           </div>
         </div>
       </div>
 
-      {/* Footer (Opcional) */}
-      <div className="mt-8 flex flex-col items-center rounded-lg bg-gray-700 p-4">
-        <button className="rounded-lg bg-gray-600 px-4 py-2 text-white hover:bg-gray-500">
-          Info
+      {/* Apartado para comentarios (sin estilos por ahora) */}
+      <div className="mt-8 border-t border-gray-600 p-4">
+        <h2 className="text-lg font-semibold">Comentarios</h2>
+        <textarea
+          placeholder="Escribe un comentario..."
+          className="mt-2 w-full rounded bg-gray-700 p-2 text-white"
+          rows="3"
+        ></textarea>
+        <button className="mt-2 rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-500">
+          Enviar comentario
         </button>
       </div>
     </div>

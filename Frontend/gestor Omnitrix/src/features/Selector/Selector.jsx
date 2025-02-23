@@ -8,7 +8,7 @@ function Selector({ aliens }) {
   const [selectedAlien, setSelectedAlien] = useState(null);
   const { transformedAlien } = useAliens();
 
-  // console.log(aliens);
+  console.log(transformedAlien);
 
   const handleSelectChange = (event) => {
     const alienId = Number(event.target.value);

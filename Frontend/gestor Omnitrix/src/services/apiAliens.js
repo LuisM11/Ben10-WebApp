@@ -7,6 +7,7 @@ export async function getAliens() {
 
   // Ajusta para extraer la propiedad correcta:
   const aliensData = await res.json();
+  console.log(aliensData);
 
   return aliensData; // aquí devolvemos el array de aliens
 }

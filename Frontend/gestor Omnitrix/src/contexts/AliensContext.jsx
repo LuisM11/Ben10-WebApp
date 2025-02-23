@@ -58,41 +58,25 @@ function reducer(state, action) {
 
 function AliensProvider({ children }) {
   const [
-    {
-      aliens,
-      currentAlien,
-      error,
-      transformedAlien,
-      remainingTime,
-      favoritos,
-      state,
-      allCharacteristicsFavs,
-    },
+    { currentAlien, transformedAlien, remainingTime, favoritos, state },
     dispatch,
   ] = useReducer(reducer, initialState);
 
   const fetchActiveTransformation = useCallback(async () => {
     try {
       const res = await fetch(`${BASE_URL}/transformations/active`);
-      console.log("res", res);
-
-      if (!res.ok) {
-        if (res.status === 404) {
-          console.warn("⚠ No hay transformación activa.");
-          return;
-        }
-        throw new Error(
-          `Error al obtener la transformación activa: ${res.status}`,
-        );
-      }
 
       const data = await res.json();
-      console.log("Transformación activa encontrada:", data);
 
       const storedStartTime = localStorage.getItem("transformationStartTime");
       const storedDuration = localStorage.getItem("transformationDuration");
 
-      const res2 = await fetch(`${BASE_URL}/aliens/1`);
+      if (data.error) {
+        console.warn("⚠ No hay transformación activa.");
+        return;
+      }
+
+      const res2 = await fetch(`${BASE_URL}/aliens/${data.alienId}`);
       if (!res2.ok) throw new Error("Error al obtener alien transformado");
 
       const data2 = await res2.json();
@@ -121,7 +105,6 @@ function AliensProvider({ children }) {
 
   const getAlien = useCallback(
     async function getAlien(id) {
-      console.log("id desde getAlien", id);
       if (Number(id) === currentAlien.id) return;
 
       try {
@@ -137,49 +120,6 @@ function AliensProvider({ children }) {
     },
     [currentAlien.id],
   );
-  // TODO Descomentar cuando transformaciones estén listas
-
-  // const transformAlien = async (alien) => {
-  //   try {
-  //     // 1️⃣ Primero, verificamos si ya hay una transformación activa
-  //     // const resCheck = await fetch(`${BASE_URL}/transformations/active`);
-  //     // const dataCheck = await resCheck.json();
-
-  //     // if (dataCheck.length > 0) {
-  //     //   console.warn(
-  //     //     "⚠ Ya hay una transformación activa. No puedes iniciar otra.",
-  //     //   );
-  //     //   return; // ⛔ Evita que se cree otra transformación
-  //     // }
-
-  //     // 2️⃣ Generar un tiempo de transformación aleatorio (30 a 90 segundos)
-  //     const tiempoTransformacion = alien.transformationDuration;
-  //     console.log(tiempoTransformacion);
-
-  //     // const nuevaTransformacion = {
-  //     //   alien_id: alien.id,
-  //     //   tiempoTransformacion,
-  //     //   estado: true, // Indica que la transformación está activa
-  //     // };
-
-  //     // 3️⃣ Enviamos la transformación a JSON Server
-  //     const res = await fetch(`${BASE_URL}/transformations/alien/${alien.id}`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-
-  //     if (!res.ok) throw new Error("Error al transformar");
-
-  //     const data = await res.json(); // JSON Server devuelve el objeto creado con un ID único
-
-  //     dispatch({
-  //       type: "alien/transformed",
-  //       payload: { ...alien, tiempoTransformacion, transformacionId: data.id },
-  //     });
-  //   } catch (error) {
-  //     console.error("Error al transformar el alien:", error);
-  //   }
-  // };
 
   const transformAlien = async (alien) => {
     try {
@@ -227,14 +167,11 @@ function AliensProvider({ children }) {
       // Obtener la transformación activa
       const res = await fetch(`${BASE_URL}/transformations/active`);
       const data = await res.json();
-      console.log("entré");
 
       if (data.error) {
         console.warn("⚠ No hay transformación activa para eliminar.");
         return;
       }
-
-      console.log("entré");
 
       // const transformacionId = data[0].id; // Tomamos el ID de la primera transformación activa
 
@@ -242,8 +179,6 @@ function AliensProvider({ children }) {
       const deleteRes = await fetch(`${BASE_URL}/transformations/stop`, {
         method: "POST",
       });
-
-      console.log(deleteRes);
 
       if (!deleteRes.ok) throw new Error("Error al detener la transformación");
 
@@ -257,16 +192,12 @@ function AliensProvider({ children }) {
 
   const addToFavorites = async (alien) => {
     try {
-      console.log("Agregando alien a favoritos:", alien);
-
       const res = await fetch(`${BASE_URL}/users/ben10/favorites/${alien.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
 
       if (!res.ok) throw new Error("Error al agregar a favoritos");
-
-      console.log("Alien agregado correctamente.");
 
       // 🔥 En lugar de modificar el estado manualmente, refrescamos la lista de favoritos desde la API
       getFavorites();
@@ -287,7 +218,6 @@ function AliensProvider({ children }) {
       if (!res.ok) throw new Error("Error al obtener favoritos");
 
       const data = await res.json();
-      console.log("Favoritos obtenidos:", data);
 
       dispatch({ type: "favoritos/cargados", payload: data });
     } catch (error) {
@@ -335,7 +265,6 @@ function useAliens() {
   if (!context) {
     throw new Error("useAliens must be used within an AliensProvider");
   }
-  // console.log(context);
   return context;
 }
 

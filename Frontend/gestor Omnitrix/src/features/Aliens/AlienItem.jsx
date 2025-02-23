@@ -1,44 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAliens } from "../../contexts/AliensContext";
+import FavoriteLogicButton from "../../UI/FavoriteLogicButton";
 
 function AlienItem({ alien }) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const {
-    favoritos,
-    addToFavorites,
-    removeFromFavorites,
-    getFavorites,
-    transformAlien,
-  } = useAliens();
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  useEffect(() => {
-    console.log(favoritos);
-    // console.log(alien.id);
-    const favoritoEncontrado = favoritos.some((fav) => fav.id === alien.id);
-    setIsFavorite(favoritoEncontrado);
-  }, [favoritos, alien.id]);
 
   function handleFlip() {
     setIsFlipped((prev) => !prev);
-  }
-
-  function handleFavoriteClick(e) {
-    e.stopPropagation();
-    if (isFavorite) {
-      const fav = favoritos.find((fav) => {
-        return fav.id === alien.id;
-      });
-
-      if (fav) {
-        console.log("fav: ", fav);
-
-        removeFromFavorites(fav.id);
-      }
-    } else {
-      addToFavorites(alien, 1);
-    }
   }
 
   return (
@@ -69,14 +38,7 @@ function AlienItem({ alien }) {
           </p>
 
           {/* Botón de favorito */}
-          <button
-            onClick={handleFavoriteClick}
-            className={`mt-2 text-xl ${
-              isFavorite ? "text-red-500" : "text-gray-400"
-            } hover:text-red-600`}
-          >
-            {isFavorite ? "❤️" : "🤍"}
-          </button>
+          <FavoriteLogicButton alien={alien} />
 
           {/* Link a más detalles */}
           <Link
