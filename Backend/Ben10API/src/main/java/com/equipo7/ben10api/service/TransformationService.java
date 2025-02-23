@@ -45,7 +45,7 @@ public class TransformationService {
 
         return new TransformationDTO(
                 transformation.getId(),
-                transformation.getUser().getUsername(),
+                transformation.getAlien().getId(),
                 transformation.getAlien().getName(),
                 transformation.getInitDate(),
                 transformation.getEndDate(),
@@ -73,7 +73,7 @@ public class TransformationService {
         int durationSeconds = alien.getTransformationDuration();
         scheduleTransformationDeactivation(transformation.getId(), durationSeconds * 1000L);
 
-        return new TransformationDTO(transformation.getId(), ben10.getUsername(), alien.getName(), initDate, endDate, true);
+        return new TransformationDTO(transformation.getId(), alien.getId(), alien.getName(), initDate, endDate, true);
     }
 
     // ✅ Schedules deactivation exactly when transformation should end
@@ -103,7 +103,7 @@ public class TransformationService {
 
         return new TransformationDTO(
                 transformation.getId(),
-                ben10.getUsername(),
+                transformation.getAlien().getId(),
                 transformation.getAlien().getName(),
                 transformation.getInitDate(),
                 LocalDateTime.now(), // Set endDate to the current time

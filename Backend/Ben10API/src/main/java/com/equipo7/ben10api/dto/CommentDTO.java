@@ -2,18 +2,17 @@ package com.equipo7.ben10api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @AllArgsConstructor
-public class TransformationDTO {
+public class CommentDTO {
     private Long id;
+    private String content;
+    private Long userId;
+    private String username;
     private Long alienId;
-    private String alienName;
-    private LocalDateTime initDate;
-    private LocalDateTime endDate;
-    private boolean active;
+    private LocalDateTime createdAt;
 }
+
