@@ -29,8 +29,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(u -> new UserDTO(u.getId(), u.getUsername(), u.getUserType()))
+                .collect(Collectors.toList());
     }
 
     public Optional<User> getUserById(Long id) {
