@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { useAliens } from "../../contexts/AliensContext";
 
 function Favorite() {
-  const { favoritos, removeFromFavorites } = useAliens();
-  console.log(favoritos);
+  const { favoritos, removeFromFavorites, getFavorites } = useAliens();
+  useEffect(() => {
+    getFavorites(); // ✅ Llamamos a getFavorites() al montar el componente
+  }, [getFavorites]);
   return (
     <div className="my-10 rounded bg-gray-800 p-4 text-white">
       <h2 className="mb-4 text-xl">Favorites</h2>
@@ -11,7 +14,7 @@ function Favorite() {
       ) : (
         favoritos.map((favorito) => (
           <div
-            key={favorito.alien_id}
+            key={favorito.id}
             className="mb-2 flex items-center justify-between rounded-lg bg-gray-700 p-2"
           >
             <div className="flex items-center">
@@ -23,7 +26,7 @@ function Favorite() {
               <span>{favorito.name}</span> {/* ✅ Ahora está disponible */}
             </div>
             <button
-              onClick={() => removeFromFavorites(favorito.alien_id)}
+              onClick={() => removeFromFavorites(favorito.id)}
               className="text-red-400 hover:text-red-600"
             >
               🗑

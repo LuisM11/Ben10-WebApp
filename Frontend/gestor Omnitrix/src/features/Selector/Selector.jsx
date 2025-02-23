@@ -6,11 +6,19 @@ import ButtonStopTransform from "../../UI/ButtonStopTransform";
 
 function Selector({ aliens }) {
   const [selectedAlien, setSelectedAlien] = useState(null);
-  const { transformedAlien, transformAlien, resetTransformation } = useAliens();
+  const { transformedAlien } = useAliens();
+
+  // console.log(aliens);
 
   const handleSelectChange = (event) => {
-    const alienId = event.target.value;
-    const alienFound = aliens.find((alien) => alien.id === alienId) || null;
+    const alienId = Number(event.target.value);
+    // console.log(alienId);
+
+    const alienFound =
+      aliens.find((alien) => {
+        return alien.id === alienId;
+      }) || null;
+    // console.log(alienFound);
     setSelectedAlien(alienFound);
   };
 
@@ -60,7 +68,7 @@ function Selector({ aliens }) {
                 className="mx-auto h-32 w-32 rounded object-contain grayscale filter transition-all duration-500"
               />
               <p className="mt-2 text-gray-400">
-                Alien seleccionado: {selectedAlien.nombre}
+                Alien seleccionado: {selectedAlien.name}
               </p>
             </div>
           )}
@@ -74,8 +82,7 @@ function Selector({ aliens }) {
                 className="mx-auto h-32 w-32 rounded border-4 border-green-500 object-contain transition-all duration-500"
               />
               <p className="mt-2 text-green-400">
-                Alien <strong>{transformedAlien.nombre}</strong> está
-                transformado
+                Alien <strong>{transformedAlien.name}</strong> está transformado
               </p>
               <TransformationTimer />
               <ButtonStopTransform />

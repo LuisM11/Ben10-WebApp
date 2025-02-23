@@ -1,6 +1,7 @@
 import { useAliens } from "../contexts/AliensContext";
 
 function ButtonTransform({ selectedAlien }) {
+  console.log(selectedAlien);
   const { transformAlien } = useAliens();
   const handleTransform = () => {
     if (selectedAlien) {

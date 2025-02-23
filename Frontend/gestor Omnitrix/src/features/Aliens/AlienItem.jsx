@@ -4,14 +4,19 @@ import { useAliens } from "../../contexts/AliensContext";
 
 function AlienItem({ alien }) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const { favoritos, addToFavorites, removeFromFavorites } = useAliens();
+  const {
+    favoritos,
+    addToFavorites,
+    removeFromFavorites,
+    getFavorites,
+    transformAlien,
+  } = useAliens();
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     console.log(favoritos);
-    const favoritoEncontrado = favoritos.some(
-      (fav) => fav.alien_id === alien.id,
-    );
+    // console.log(alien.id);
+    const favoritoEncontrado = favoritos.some((fav) => fav.id === alien.id);
     setIsFavorite(favoritoEncontrado);
   }, [favoritos, alien.id]);
 
@@ -23,13 +28,13 @@ function AlienItem({ alien }) {
     e.stopPropagation();
     if (isFavorite) {
       const fav = favoritos.find((fav) => {
-        return fav.alien_id === alien.id;
+        return fav.id === alien.id;
       });
 
       if (fav) {
         console.log("fav: ", fav);
 
-        removeFromFavorites(fav.alien_id);
+        removeFromFavorites(fav.id);
       }
     } else {
       addToFavorites(alien, 1);
