@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for testing
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**", "/aliens/**","/transformations/**","/comments/**").permitAll() // Allow public access
+                        .requestMatchers("/users/**", "/aliens/**","/transformations/**","/comments/**","/swagger-ui/**","/swagger-ui.html","/v3/api-docs/**","/v3/api-docs").permitAll() // Allow public access
                         .anyRequest().authenticated() // Require authentication for other endpoints
                 );
         return http.build();
