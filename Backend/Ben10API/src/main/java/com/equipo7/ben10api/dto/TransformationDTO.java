@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TransformationDTO {
     private Long id;
-    private String username;
+    private Long alienId;
     private String alienName;
     private LocalDateTime initDate;
     private LocalDateTime endDate;
