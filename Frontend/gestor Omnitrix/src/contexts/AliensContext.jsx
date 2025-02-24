@@ -123,7 +123,7 @@ function AliensProvider({ children }) {
 
   const transformAlien = async (alien) => {
     try {
-      const tiempoTransformacion = alien.transformationDuration;
+      const tiempoTransformacion = 3; //alien.transformationDuration; //TODO: Descomentar, sólo para prueba
       const startTime = Date.now(); // ⏳ Guardamos la hora actual en milisegundos
 
       const res = await fetch(`${BASE_URL}/transformations/alien/${alien.id}`, {
@@ -165,15 +165,13 @@ function AliensProvider({ children }) {
   const resetTransformation = async () => {
     try {
       // Obtener la transformación activa
-      const res = await fetch(`${BASE_URL}/transformations/active`);
-      const data = await res.json();
+      // const res = await fetch(`${BASE_URL}/transformations/active`);
+      // const data = await res.json();
 
-      if (data.error) {
-        console.warn("⚠ No hay transformación activa para eliminar.");
-        return;
-      }
-
-      // const transformacionId = data[0].id; // Tomamos el ID de la primera transformación activa
+      // if (data.error) {
+      //   console.warn("⚠ No hay transformación activa para eliminar.");
+      //   return;
+      // }
 
       // Eliminar la transformación correcta
       const deleteRes = await fetch(`${BASE_URL}/transformations/stop`, {
