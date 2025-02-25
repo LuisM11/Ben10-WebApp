@@ -5,6 +5,7 @@
       "name": "Fuego",
       "description": "Alien de fuego con habilidades de fuego",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/cd251d163729347.63ed236830edc.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 80,
         "strength": 70,
@@ -20,6 +21,7 @@
       "name": "XLR8",
       "description": "Alien súper rápido con la capacidad de moverse a velocidades extremas",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/501e38163729347.63ed2364355b0.gif",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 100,
         "strength": 50,
@@ -35,6 +37,7 @@
       "name": "Bestia",
       "description": "Alien salvaje, parecido a un felino, con agilidad y sentidos aumentados",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/0eb500163729347.63ed23682ee02.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 75,
         "strength": 80,
@@ -50,6 +53,7 @@
       "name": "Cuatro brazos",
       "description": "Alien enorme de piel roja con cuatro brazos y gran fuerza",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/source/25b579163729347.63ed23682e37c.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 50,
         "strength": 100,
@@ -65,6 +69,7 @@
       "name": "Materia Gris",
       "description": "Alien diminuto pero muy inteligente, con una capacidad excepcional para resolver problemas",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/97247b163729347.63ed23650ea8c.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 30,
         "strength": 10,
@@ -80,6 +85,7 @@
       "name": "Ultra T",
       "description": "Alien biomecánico con la capacidad de fusionar y mejorar la tecnología.",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/a7870e163729347.63ed2363df75f.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 70,
         "strength": 60,
@@ -95,6 +101,7 @@
       "name": "Diamante",
       "description": "Alien cristalino con un cuerpo casi indestructible y la capacidad de lanzar proyectiles afilados.",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/78030c163729347.63ed2363deb8f.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 60,
         "strength": 85,
@@ -110,6 +117,7 @@
       "name": "Insectoide",
       "description": "Alien insectoide con la capacidad de volar y escupir una sustancia pegajosa.",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/c6e738163729347.63ed23650de06.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 85,
         "strength": 50,
@@ -125,6 +133,7 @@
       "name": "Acuático",
       "description": "Alien acuático con poderosas mandíbulas y la capacidad de respirar bajo el agua.",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/hd/85b7d5163729347.63ed236435f56.gif",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 70,
         "strength": 75,
@@ -140,6 +149,7 @@
       "name": "Cannonbolt",
       "description": "Alien duradero y rodante que puede enroscarse en una bola para realizar ataques giratorios a gran velocidad.",
       "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/685588163729347.63ed23648fd56.jpg",
+      "transformationDurationSeconds": 5,
       "stats": {
         "speed": 60,
         "strength": 85,

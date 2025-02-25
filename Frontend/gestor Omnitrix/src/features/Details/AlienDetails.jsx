@@ -4,71 +4,109 @@ import { useAliens } from "../../contexts/AliensContext";
 import ButtonTransform from "../../UI/ButtonTransform";
 import ButtonStopTransform from "../../UI/ButtonStopTransform";
 import TransformationTimer from "../Transformation/TransformationTimer";
+import FavoriteLogicButton from "../../UI/FavoriteLogicButton";
+import RotationCard from "../../UI/RotationCard";
 
 function AlienDetails() {
   const { id } = useParams();
   const { getAlien, currentAlien, transformedAlien } = useAliens();
-  console.log(transformedAlien);
-  // console.log(id);
+
   useEffect(() => {
-    // console.log("object");
     getAlien(id);
   }, [id, getAlien]);
-  //   if (!currentAlien) {
-  //     return <p className="text-center text-white">Cargando...</p>;
-  //   }
 
   const { name, description, stats, imageUrl } = currentAlien;
-  console.log(currentAlien);
+
+  console.log("desde Details", currentAlien);
+
+  // console.log(currentAlien);
 
   return (
-    <div className="mx-auto max-w-4xl rounded-lg bg-gray-800 p-6 text-white shadow-md">
-      {/* Contenedor principal */}
-      <div className="flex">
-        {/* Imagen del alien */}
-        <div className="flex w-1/3 items-center justify-center">
-          <img
-            src={imageUrl}
-            alt={name}
-            className="h-auto w-full rounded-lg shadow-lg"
-          />
+    <div className="my-10 rounded bg-gray-800 p-6 text-white">
+      <div className="flex gap-4">
+        <div className="w-1/2">
+          <img src={imageUrl} alt={name} className="rounded-lg shadow-lg" />
+
+          <div className="mt-4 flex flex-col justify-center sm:flex-row sm:items-center">
+            {!transformedAlien ? (
+              <ButtonTransform selectedAlien={currentAlien} />
+            ) : (
+              <>
+                <div className="flex justify-center gap-2 sm:justify-normal">
+                  <ButtonStopTransform />
+                </div>
+
+                <TransformationTimer />
+              </>
+            )}
+          </div>
         </div>
 
-        {/* Información del alien */}
-        <div className="w-2/3 pl-6">
-          <h1 className="mb-2 text-3xl font-bold">{name}</h1>
-          <p className="text-sm text-gray-300">{description}</p>
+        <div className="flex w-1/2 flex-col items-center text-sm sm:text-xl">
+          <FavoriteLogicButton alien={currentAlien} />
 
-          {/* Habilidades */}
-          <div className="mt-4">
-            <h2 className="text-lg font-semibold">Habilidades</h2>
-            <ul className="list-inside list-disc text-gray-400">
-              {Object.entries(stats || {})?.map(([key, value], index) => (
-                <li key={index}>
-                  {key}: {value}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Botón de Transformación y Favoritos */}
-          <div className="mt-6 flex items-center">
-            <ButtonTransform selectedAlien={currentAlien} />
-            <ButtonStopTransform />
-            <TransformationTimer />
-            <button className="ml-4 rounded-lg border border-gray-500 bg-transparent px-4 py-2 text-white hover:bg-gray-700">
-              ❤️
-            </button>
-            <p>{` Alien actual: ${transformedAlien?.nombre}`}</p>
-          </div>
+          <p>
+            {description} Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Modi, voluptas sit vero unde quo voluptatem ex laboriosam
+            neque doloribus earum.
+          </p>
+          <ul className="list-inside list-disc text-sm text-gray-400 sm:text-2xl">
+            {Object.entries(stats || {}).map(([key, value], index) => (
+              <li key={index}>
+                {key}: {value}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
-      {/* Footer (Opcional) */}
-      <div className="mt-8 flex flex-col items-center rounded-lg bg-gray-700 p-4">
-        <button className="rounded-lg bg-gray-600 px-4 py-2 text-white hover:bg-gray-500">
-          Info
-        </button>
+      <div className="mt-2 flex">
+        {/* <div className="flex w-1/2 flex-col items-center justify-center">
+          {!transformedAlien ? (
+            <ButtonTransform selectedAlien={currentAlien} />
+          ) : (
+            <ButtonStopTransform />
+          )}
+
+          <TransformationTimer />
+        </div> */}
+
+        <div className="w-1/2 px-3">
+          {/* <ul className="list-inside list-disc text-sm text-gray-400">
+            {Object.entries(stats || {}).map(([key, value], index) => (
+              <li key={index}>
+                {key}: {value}
+              </li>
+            ))}
+          </ul> */}
+        </div>
+      </div>
+
+      <div className="mt-2">
+        <div className="flex flex-col items-center">
+          {transformedAlien && (
+            <>
+              <div className="mt-2 w-1/2">
+                {currentAlien.id === transformedAlien.id ? (
+                  ""
+                ) : (
+                  <>
+                    <div className="mb-2 flex justify-center">
+                      Transformación actual
+                    </div>
+                    <RotationCard alien={transformedAlien} type="detailAlien" />
+                  </>
+                )}
+
+                {/* <img
+                  src={transformedAlien?.imageUrl}
+                  alt={name}
+                  className="rounded-lg shadow-lg"
+                /> */}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

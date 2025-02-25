@@ -10,14 +10,14 @@ out/
 *.war
 *.ear
 *.log
-/target/
-/.classpath
-/.project
-/.settings/
+target/
+.classpath
+.project
+.settings/
 
 # Spring Boot
 *.log
-/logs/
+logs/
 *.pid
 *.gz
 
@@ -25,11 +25,11 @@ out/
 node_modules/
 npm-debug.log
 yarn-error.log
-/.pnp
+.pnp
 .pnp.js
 
 # React
-/build/
+build/
 .DS_Store
 .env.local
 .env.development.local
@@ -53,7 +53,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # Temporary files
-/tmp/
+tmp/
 *.swp
 *.swo
 

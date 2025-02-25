@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -33,17 +35,22 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transformation> transformations;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "favorites",
+            name = "user_favorites",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "alien_id")
     )
-    private List<Alien> favoriteAliens;
+    private Set<Alien> favorites = new HashSet<>();
 
-    // Utility method to hash password before saving
-//    public void hashPassword() {
-//        this.password = new BCryptPasswordEncoder().encode(this.password);
-//    }
+    // ✅ Add Favorite Alien
+    public void addFavorite(Alien alien) {
+        favorites.add(alien);
+    }
+
+    // ✅ Remove Favorite Alien
+    public void removeFavorite(Alien alien) {
+        favorites.remove(alien);
+    }
 }
 

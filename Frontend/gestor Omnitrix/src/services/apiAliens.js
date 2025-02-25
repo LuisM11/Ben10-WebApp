@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:9000";
+const API_URL = "http://localhost:8080";
 
 export async function getAliens() {
   const res = await fetch(`${API_URL}/aliens`);
@@ -7,6 +7,7 @@ export async function getAliens() {
 
   // Ajusta para extraer la propiedad correcta:
   const aliensData = await res.json();
+  console.log(aliensData);
 
   return aliensData; // aquí devolvemos el array de aliens
 }
