@@ -17,14 +17,32 @@ function AlienDetails() {
 
   const { name, description, stats, imageUrl } = currentAlien;
 
+  console.log("desde Details", currentAlien);
+
+  // console.log(currentAlien);
+
   return (
     <div className="my-10 rounded bg-gray-800 p-6 text-white">
       <div className="flex gap-4">
         <div className="w-1/2">
           <img src={imageUrl} alt={name} className="rounded-lg shadow-lg" />
+
+          <div className="mt-4 flex flex-col justify-center sm:flex-row sm:items-center">
+            {!transformedAlien ? (
+              <ButtonTransform selectedAlien={currentAlien} />
+            ) : (
+              <>
+                <div className="flex justify-center gap-2 sm:justify-normal">
+                  <ButtonStopTransform />
+                </div>
+
+                <TransformationTimer />
+              </>
+            )}
+          </div>
         </div>
 
-        <div className="flex w-1/2 flex-col items-center justify-center text-sm">
+        <div className="flex w-1/2 flex-col items-center text-sm sm:text-xl">
           <FavoriteLogicButton alien={currentAlien} />
 
           <p>
@@ -32,11 +50,18 @@ function AlienDetails() {
             elit. Modi, voluptas sit vero unde quo voluptatem ex laboriosam
             neque doloribus earum.
           </p>
+          <ul className="list-inside list-disc text-sm text-gray-400 sm:text-2xl">
+            {Object.entries(stats || {}).map(([key, value], index) => (
+              <li key={index}>
+                {key}: {value}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
       <div className="mt-2 flex">
-        <div className="flex w-1/2 flex-col items-center justify-center">
+        {/* <div className="flex w-1/2 flex-col items-center justify-center">
           {!transformedAlien ? (
             <ButtonTransform selectedAlien={currentAlien} />
           ) : (
@@ -44,16 +69,16 @@ function AlienDetails() {
           )}
 
           <TransformationTimer />
-        </div>
+        </div> */}
 
         <div className="w-1/2 px-3">
-          <ul className="list-inside list-disc text-sm text-gray-400">
+          {/* <ul className="list-inside list-disc text-sm text-gray-400">
             {Object.entries(stats || {}).map(([key, value], index) => (
               <li key={index}>
                 {key}: {value}
               </li>
             ))}
-          </ul>
+          </ul> */}
         </div>
       </div>
 

@@ -7,7 +7,7 @@ function TransformationTimer() {
   if (remainingTime <= 0) return null;
 
   return (
-    <div className="mt-2 p-2 text-center text-gray-300">
+    <div className="flex-w mt-2 text-center text-gray-300 md:text-lg">
       ⏳ Tiempo restante: <strong>{remainingTime} segundos</strong>
     </div>
   );

@@ -33,7 +33,7 @@ function FavoriteLogicButton({ alien }) {
   return (
     <button
       onClick={handleFavoriteClick}
-      className={`text-2xl ${
+      className={`text-2xl sm:text-3xl ${
         isFavorite ? "text-red-500" : "text-gray-400"
       } hover:text-red-600`}
     >

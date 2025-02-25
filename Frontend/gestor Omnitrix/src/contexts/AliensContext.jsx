@@ -123,7 +123,7 @@ function AliensProvider({ children }) {
 
   const transformAlien = async (alien) => {
     try {
-      const tiempoTransformacion = 3; //alien.transformationDuration; //TODO: Descomentar, sólo para prueba
+      const tiempoTransformacion = 100; //alien.transformationDuration; //TODO: Descomentar, sólo para prueba
       const startTime = Date.now(); // ⏳ Guardamos la hora actual en milisegundos
 
       const res = await fetch(`${BASE_URL}/transformations/alien/${alien.id}`, {
