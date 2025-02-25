@@ -42,7 +42,7 @@ function AlienDetails() {
           </div>
         </div>
 
-        <div className="flex w-1/2 flex-col items-center text-sm sm:text-xl">
+        <div className="flex w-1/2 flex-col items-center text-sm md:text-lg">
           <FavoriteLogicButton alien={currentAlien} />
 
           <p>
@@ -50,7 +50,7 @@ function AlienDetails() {
             elit. Modi, voluptas sit vero unde quo voluptatem ex laboriosam
             neque doloribus earum.
           </p>
-          <ul className="list-inside list-disc text-sm text-gray-400 sm:text-2xl">
+          <ul className="list-inside list-disc text-sm text-gray-400 md:text-lg">
             {Object.entries(stats || {}).map(([key, value], index) => (
               <li key={index}>
                 {key}: {value}

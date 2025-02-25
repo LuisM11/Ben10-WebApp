@@ -42,7 +42,7 @@ function Selector({ aliens }) {
               </label>
               <select
                 id="alien-select"
-                className="rounded bg-gray-700 p-2"
+                className="w-full rounded bg-gray-700 p-2"
                 onChange={handleSelectChange}
               >
                 <option value="">Selecciona un alien</option>

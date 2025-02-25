@@ -7,20 +7,26 @@ function Header() {
   const isAuthenticated = true;
 
   return (
-    <header className="flex items-center justify-between bg-gray-800 p-4 text-white">
+    <header className="flex flex-wrap items-center justify-between bg-gray-800 p-4 text-white">
       <Logo />
 
       <nav>
         {isAuthenticated ? (
           <div className="flex items-center space-x-4">
-            <Link to="/favorites" className="hover:underline">
-              Favoritos
-            </Link>
-            <button
-              className="rounded bg-red-500 px-3 py-1 hover:bg-red-600"
-              // onClick={() => dispatch({ type: "LOGOUT" })}
+            <Link
+              to="/favorites"
+              className="flex items-center gap-2 hover:underline"
             >
-              Logout
+              <span className="material-symbols-outlined sm:hidden">
+                bookmark_star
+              </span>
+              <span className="hidden sm:block">Favoritos</span>
+            </Link>
+            <button className="flex items-center gap-2 rounded bg-red-500 px-3 py-1 hover:bg-red-600">
+              <span className="material-symbols-outlined sm:hidden">
+                logout
+              </span>
+              <span className="hidden sm:block">Logout</span>
             </button>
             <div className="h-8 w-8 rounded-full bg-gray-500"></div>{" "}
             {/* Icono de perfil */}
