@@ -2,6 +2,7 @@ package com.equipo7.ben10api.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +37,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for testing
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/swagger-ui/**","/swagger-ui.html","/v3/api-docs/**","/v3/api-docs").permitAll() // Allow public access
+                        .requestMatchers(HttpMethod.POST,"/auth/login","/users").permitAll()
+                        .requestMatchers( "/swagger-ui/**","/swagger-ui.html","/v3/api-docs/**","/v3/api-docs").permitAll() // Allow public access
                         .anyRequest().authenticated() // Require authentication for other endpoints
                 ).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before UsernamePasswordAuthenticationFilter;
         return http.build();
