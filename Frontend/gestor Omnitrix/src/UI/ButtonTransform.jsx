@@ -8,7 +8,6 @@ function ButtonTransform({ selectedAlien }) {
       transformAlien(selectedAlien);
     }
   };
-  console.log("desde buttons transform", selectedAlien.name);
 
   return (
     <button

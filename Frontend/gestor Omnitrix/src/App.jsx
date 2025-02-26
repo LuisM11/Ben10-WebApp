@@ -6,6 +6,8 @@ import AppContent, { loader as aliensLoader } from "./UI/AppContent";
 import Favorite from "./features/Favorites/Favorite";
 import AlienDetails from "./features/Details/AlienDetails";
 import { AliensProvider } from "./contexts/AliensContext";
+import { CommentsProvider } from "./contexts/CommentsContext";
+// import { CommentsProvider } from "./contexts/CommentsContext";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> }, // Home sin Header
@@ -30,7 +32,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AliensProvider>
-      <RouterProvider router={router} />
+      <CommentsProvider>
+        <RouterProvider router={router} />
+      </CommentsProvider>
     </AliensProvider>
   );
 }
