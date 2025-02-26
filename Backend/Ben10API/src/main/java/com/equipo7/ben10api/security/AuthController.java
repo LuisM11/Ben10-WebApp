@@ -2,6 +2,7 @@ package com.equipo7.ben10api.security;
 
 import com.equipo7.ben10api.dto.LoginUserDTO;
 import com.equipo7.ben10api.exception.UserNotFoundException;
+import com.equipo7.ben10api.model.User;
 import com.equipo7.ben10api.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,11 +31,11 @@ public class AuthController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        UserDetails user = userRepository.findByUsername(loginRequest.getUsername())
+        UserDetails userDetails = userRepository.findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        User user = (User) userDetails;
         String token = jwtUtil.generateToken(user.getUsername());
 
-        return ResponseEntity.ok(Map.of("token", token));
+        return ResponseEntity.ok(Map.of("token", token,"username", user.getUsername(),"userType", user.getUserType().toString()));
     }
 }
