@@ -4,8 +4,11 @@ import com.equipo7.ben10api.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +17,7 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,14 +46,37 @@ public class User {
     )
     private Set<Alien> favorites = new HashSet<>();
 
-    // ✅ Add Favorite Alien
     public void addFavorite(Alien alien) {
         favorites.add(alien);
     }
 
-    // ✅ Remove Favorite Alien
     public void removeFavorite(Alien alien) {
         favorites.remove(alien);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
 
