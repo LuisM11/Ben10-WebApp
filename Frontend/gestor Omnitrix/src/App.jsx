@@ -1,37 +1,65 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import AppLayout from "./UI/AppLayout";
 import Login from "./features/Login/Login";
 import Home from "./UI/Home";
-import AppContent, { loader as aliensLoader } from "./UI/AppContent";
+import AppContent from "./UI/AppContent";
 import Favorite from "./features/Favorites/Favorite";
 import AlienDetails from "./features/Details/AlienDetails";
 import { AliensProvider } from "./contexts/AliensContext";
+import { CommentsProvider } from "./contexts/CommentsContext";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+
+// 🔐 Componente para proteger rutas
+function PrivateRoute({ children }) {
+  const { token } = useAuth();
+  return token ? children : <Navigate to="/login" replace />;
+}
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> }, // Home sin Header
-  { path: "/login", element: <Login /> }, // Login sin Header
+  { path: "/", element: <Home /> },
+  { path: "/login", element: <Login /> },
   {
     path: "/app",
-    element: <AppLayout />, // Usa un Layout con Header
-    children: [{ index: true, element: <AppContent />, loader: aliensLoader }], // Selector y Aliens
+    element: (
+      <PrivateRoute>
+        <AppLayout />
+      </PrivateRoute>
+    ),
+    children: [{ index: true, element: <AppContent /> }],
   },
   {
     path: "/favorites",
-    element: <AppLayout />, // Usa el mismo Layout con Header
-    children: [{ index: true, element: <Favorite /> }], // Página de favoritos
+    element: (
+      <PrivateRoute>
+        <AppLayout />
+      </PrivateRoute>
+    ),
+    children: [{ index: true, element: <Favorite /> }],
   },
   {
     path: "/alienDetails",
-    element: <AppLayout />,
+    element: (
+      <PrivateRoute>
+        <AppLayout />
+      </PrivateRoute>
+    ),
     children: [{ path: ":id", element: <AlienDetails /> }],
   },
 ]);
 
 function App() {
   return (
-    <AliensProvider>
-      <RouterProvider router={router} />
-    </AliensProvider>
+    <AuthProvider>
+      <AliensProvider>
+        <CommentsProvider>
+          <RouterProvider router={router} />
+        </CommentsProvider>
+      </AliensProvider>
+    </AuthProvider>
   );
 }
 

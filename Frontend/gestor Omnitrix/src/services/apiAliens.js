@@ -1,13 +1,23 @@
-const API_URL = "http://localhost:8080";
+export async function getAliens(token) {
+  // 🔥 Ahora recibe el token como parámetro
+  console.log("token desde getAliens", token);
 
-export async function getAliens() {
-  const res = await fetch(`${API_URL}/aliens`);
+  if (!token) {
+    console.warn("🔴 Intento de solicitud sin token. Evitando la petición...");
+    throw new Error("Token no disponible");
+  }
+
+  const res = await fetch(`http://localhost:8080/aliens`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!res.ok) throw new Error("Failed to fetch aliens");
 
-  // Ajusta para extraer la propiedad correcta:
   const aliensData = await res.json();
   console.log(aliensData);
-
-  return aliensData; // aquí devolvemos el array de aliens
+  return aliensData;
 }
