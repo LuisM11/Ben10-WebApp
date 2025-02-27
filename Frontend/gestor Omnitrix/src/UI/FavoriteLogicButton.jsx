@@ -33,16 +33,19 @@ function FavoriteLogicButton({ alien }) {
     }
   }
 
-  return (
+  return user.id === 1 ? (
     <button
       onClick={handleFavoriteClick}
       className={`text-2xl sm:text-3xl ${
         isFavorite ? "text-red-500" : "text-gray-400"
       } hover:text-red-600`}
     >
-      {(isFavorite && user.id === 1 ? "❤️" : user.id === 1 && "🤍") ||
-        (isFavorite && "es uno de los fav de ben")}
+      {isFavorite ? "❤️" : "🤍"}
     </button>
+  ) : (
+    isFavorite && (
+      <p className="text-sm">{alien.name} es uno de los favoritos de Ben!</p>
+    )
   );
 }
 

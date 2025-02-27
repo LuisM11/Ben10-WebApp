@@ -10,7 +10,6 @@ function RotationCard({ alien, type }) {
   }
 
   // 🔹 Definir colores según el `type`
-  const frontBg = type === "detailAlien" ? "bg-neutral-500" : "bg-gray-100";
   const backBg = type === "detailAlien" ? "bg-black-800" : "bg-black/80";
 
   return (
