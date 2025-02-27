@@ -25,7 +25,6 @@ export function AuthProvider({ children }) {
 
   const login = async (username, password) => {
     try {
-      console.log("hola desde login");
       const res = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -37,7 +36,6 @@ export function AuthProvider({ children }) {
       }
 
       const data = await res.json();
-      console.log("data", data);
       setToken(data.token);
       setUser({ id: data.id, username: data.username }); // Guarda el userId globalmente
       setUserType(data.userType);
@@ -56,8 +54,30 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("userType");
   };
 
+  const register = async (username, password) => {
+    try {
+      const res = await fetch("http://localhost:8080/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password, userType: "COMMON" }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Error en el registro");
+      }
+
+      return await res.json();
+    } catch (error) {
+      console.error("Error en registro:", error.message);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, userType, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, userType, login, logout, register }}
+    >
       {children}
     </AuthContext.Provider>
   );

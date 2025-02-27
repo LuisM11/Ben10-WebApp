@@ -1,6 +1,5 @@
 export async function getAliens(token) {
   // 🔥 Ahora recibe el token como parámetro
-  console.log("token desde getAliens", token);
 
   if (!token) {
     console.warn("🔴 Intento de solicitud sin token. Evitando la petición...");
@@ -18,6 +17,5 @@ export async function getAliens(token) {
   if (!res.ok) throw new Error("Failed to fetch aliens");
 
   const aliensData = await res.json();
-  console.log(aliensData);
   return aliensData;
 }

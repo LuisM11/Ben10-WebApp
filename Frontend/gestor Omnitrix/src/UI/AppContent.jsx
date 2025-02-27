@@ -5,7 +5,6 @@ import Alien from "../features/Aliens/Alien";
 import { useAuth } from "../contexts/AuthContext";
 
 function AppContent() {
-  console.log("app content");
   const { token } = useAuth();
   const [aliens, setAliens] = useState([]);
   const [loading, setLoading] = useState(true);

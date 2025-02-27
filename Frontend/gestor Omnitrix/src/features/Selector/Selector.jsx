@@ -10,17 +10,13 @@ function Selector({ aliens }) {
   const { transformedAlien } = useAliens();
   const { user } = useAuth(); // Obtiene el token y el usuario actual
 
-  // console.log(transformedAlien);
-
   const handleSelectChange = (event) => {
     const alienId = Number(event.target.value);
-    // console.log(alienId);
 
     const alienFound =
       aliens.find((alien) => {
         return alien.id === alienId;
       }) || null;
-    // console.log(alienFound);
     setSelectedAlien(alienFound);
   };
 
@@ -30,7 +26,6 @@ function Selector({ aliens }) {
   //   }
   // };
 
-  console.log("desde trans", transformedAlien);
   return (
     <div className="my-10 rounded bg-gray-800 p-4 text-white">
       <div className="flex items-center justify-center space-x-7">
