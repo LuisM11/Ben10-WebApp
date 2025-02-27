@@ -1,6 +1,7 @@
 package com.equipo7.ben10api.security;
 
 import com.equipo7.ben10api.dto.LoginUserDTO;
+import com.equipo7.ben10api.dto.UserDTO;
 import com.equipo7.ben10api.exception.UserNotFoundException;
 import com.equipo7.ben10api.model.User;
 import com.equipo7.ben10api.repository.UserRepository;
@@ -27,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginUserDTO loginRequest) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserDTO loginRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -36,6 +37,6 @@ public class AuthController {
         User user = (User) userDetails;
         String token = jwtUtil.generateToken(user.getUsername());
 
-        return ResponseEntity.ok(Map.of("token", token,"username", user.getUsername(),"userType", user.getUserType().toString()));
+        return ResponseEntity.ok(Map.of("token", token,"id",user.getId(),"username", user.getUsername(),"userType", user.getUserType().toString()));
     }
 }
