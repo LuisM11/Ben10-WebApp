@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import CommentForm from "./CommentForm";
 import { useComments } from "../contexts/CommentsContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const Comment = ({ comment }) => {
   const { comments, fetchReplies, addComment, editComment, removeComment } =
     useComments();
+  const { user } = useAuth(); // Obtiene el token y el usuario actual
+
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   // Inicializamos showReplies en true si ya existen respuestas en el estado global
@@ -52,13 +55,17 @@ const Comment = ({ comment }) => {
         <button onClick={() => setShowReplies((prev) => !prev)}>
           {showReplies ? "Ocultar respuestas" : "Ver respuestas"}
         </button>
-        <button onClick={() => setIsEditing(!isEditing)}>Editar</button>
-        <button
-          onClick={() => removeComment(comment.id)}
-          className="text-red-500"
-        >
-          Eliminar
-        </button>
+        {(user.id === 1 || comment.userId === user.id) && (
+          <button onClick={() => setIsEditing(!isEditing)}>Editar</button>
+        )}
+        {(user.id === 1 || comment.userId === user.id) && (
+          <button
+            onClick={() => removeComment(comment.id)}
+            className="text-red-500"
+          >
+            Eliminar
+          </button>
+        )}
       </div>
 
       {/* Formulario para responder */}
