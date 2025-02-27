@@ -30,7 +30,7 @@ function Selector({ aliens }) {
   //   }
   // };
 
-  // console.log("desde Selector", selectedAlien);
+  console.log("desde trans", transformedAlien);
   return (
     <div className="my-10 rounded bg-gray-800 p-4 text-white">
       <div className="flex items-center justify-center space-x-7">
@@ -56,8 +56,21 @@ function Selector({ aliens }) {
               </select>
             </div>
 
-            {selectedAlien && !transformedAlien && user.id === 1 && (
+            {selectedAlien && !transformedAlien && user.id === 1 ? (
               <ButtonTransform selectedAlien={selectedAlien} />
+            ) : (
+              <>
+                <div className="flex justify-center gap-2 sm:justify-normal">
+                  {user.id === 1 ? (
+                    transformedAlien && <ButtonStopTransform />
+                  ) : transformedAlien ? (
+                    <p>Ben 10 está transformado ahora mismo...</p>
+                  ) : (
+                    "Ben descansa ahora mismo"
+                  )}
+                </div>
+                <TransformationTimer />
+              </>
             )}
           </div>
         )}
@@ -86,14 +99,13 @@ function Selector({ aliens }) {
                   className="mx-auto h-32 w-32 rounded border-4 border-green-500 object-contain transition-all duration-500"
                 />
                 <p className="mt-2 text-center text-green-400">
-                  Alien <strong>{transformedAlien.name}</strong> está
-                  transformado
+                  {user.id === 1
+                    ? `Estás transformado en ${transformedAlien.name} `
+                    : `Ben 10 está transformado en ${transformedAlien.name} `}
                 </p>
               </div>
               <div className="flex w-1/2 flex-col items-center">
-                <div>
-                  <ButtonStopTransform />
-                </div>
+                <div>{user.id === 1 && <ButtonStopTransform />}</div>
                 <div>
                   <TransformationTimer />
                 </div>

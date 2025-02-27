@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useAliens } from "../../contexts/AliensContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Favorite() {
   const { favoritos, removeFromFavorites, getFavorites } = useAliens();
+  const { user } = useAuth();
   useEffect(() => {
     getFavorites(); // ✅ Llamamos a getFavorites() al montar el componente
   }, [getFavorites]);
@@ -25,12 +27,14 @@ function Favorite() {
               />
               <span>{favorito.name}</span> {/* ✅ Ahora está disponible */}
             </div>
-            <button
-              onClick={() => removeFromFavorites(favorito.id)}
-              className="text-red-400 hover:text-red-600"
-            >
-              🗑
-            </button>
+            {user.id === 1 && (
+              <button
+                onClick={() => removeFromFavorites(favorito.id)}
+                className="text-red-400 hover:text-red-600"
+              >
+                🗑
+              </button>
+            )}
           </div>
         ))
       )}
