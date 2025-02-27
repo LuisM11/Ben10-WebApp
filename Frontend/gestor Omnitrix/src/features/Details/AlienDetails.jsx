@@ -7,10 +7,12 @@ import TransformationTimer from "../Transformation/TransformationTimer";
 import FavoriteLogicButton from "../../UI/FavoriteLogicButton";
 import RotationCard from "../../UI/RotationCard";
 import CommentSection from "../../comments/CommentSection";
+import { useAuth } from "../../contexts/AuthContext";
 
 function AlienDetails() {
   const { id } = useParams();
   const { getAlien, currentAlien, transformedAlien } = useAliens();
+  const { user } = useAuth(); // Obtiene el token y el usuario actual
 
   useEffect(() => {
     getAlien(id);
@@ -30,12 +32,18 @@ function AlienDetails() {
             className="rounded-lg shadow-lg"
           />
           <div className="mt-4 flex flex-col justify-center sm:flex-row sm:items-center">
-            {!transformedAlien ? (
+            {!transformedAlien && user.id === 1 ? (
               <ButtonTransform selectedAlien={currentAlien} />
             ) : (
               <>
                 <div className="flex justify-center gap-2 sm:justify-normal">
-                  <ButtonStopTransform />
+                  {user.id === 1 ? (
+                    <ButtonStopTransform />
+                  ) : transformedAlien ? (
+                    <p>Ben 10 está transformado ahora mismo...</p>
+                  ) : (
+                    "Ben descansa ahora mismo"
+                  )}
                 </div>
                 <TransformationTimer />
               </>

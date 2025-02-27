@@ -3,10 +3,12 @@ import { useAliens } from "../../contexts/AliensContext";
 import TransformationTimer from "../Transformation/TransformationTimer";
 import ButtonTransform from "../../UI/ButtonTransform";
 import ButtonStopTransform from "../../UI/ButtonStopTransform";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Selector({ aliens }) {
   const [selectedAlien, setSelectedAlien] = useState(null);
   const { transformedAlien } = useAliens();
+  const { user } = useAuth(); // Obtiene el token y el usuario actual
 
   // console.log(transformedAlien);
 
@@ -54,7 +56,7 @@ function Selector({ aliens }) {
               </select>
             </div>
 
-            {selectedAlien && !transformedAlien && (
+            {selectedAlien && !transformedAlien && user.id === 1 && (
               <ButtonTransform selectedAlien={selectedAlien} />
             )}
           </div>
