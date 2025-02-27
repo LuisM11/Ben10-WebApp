@@ -11,9 +11,6 @@ function Home() {
                 Your browser does not support the video tag.
             </video>
             <div className="overlay"></div>
-            {/*<div className="home-text">*/}
-            {/*    <h1>GESTOR<br/>ALIEN<br/>OMNITRIX</h1>*/}
-            {/*</div>*/}
             <div className="home-text">
                 <h1>
                     <span className="full-text">GESTOR<br/>ALIEN<br/>OMNITRIX</span>
