@@ -101,5 +101,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+Backend/Ben10API/src/main/resources/application.properties
+
 ### VS Code ###
 .vscode/
