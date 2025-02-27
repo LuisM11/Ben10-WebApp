@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function RotationCard({ alien, type }) {
   const [isFlipped, setIsFlipped] = useState(false);
-
+  console.log("alien", alien);
   function handleFlip() {
     setIsFlipped((prev) => !prev);
   }

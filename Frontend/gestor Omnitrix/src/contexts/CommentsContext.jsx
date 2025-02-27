@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
 import { useAliens } from "./AliensContext";
+import { useAuth } from "./AuthContext"; // Importa el contexto de autenticación
 
 const CommentsContext = createContext();
 
@@ -37,6 +38,7 @@ function commentsReducer(state, action) {
 
 export function CommentsProvider({ children }) {
   const { currentAlien } = useAliens();
+  const { token, user } = useAuth(); // Obtiene el token y el usuario actual
   const [state, dispatch] = useReducer(commentsReducer, initialState);
 
   useEffect(() => {
@@ -45,12 +47,32 @@ export function CommentsProvider({ children }) {
     }
   }, [currentAlien]);
 
+  const apiRequest = async (endpoint, options = {}) => {
+    const res = await fetch(`http://localhost:8080${endpoint}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Incluye el token en cada petición
+        ...options.headers,
+      },
+    });
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        console.error("Token inválido o expirado. Redirigiendo al login...");
+        localStorage.removeItem("token");
+        window.location.href = "/login"; // Redirige al login si la sesión expira
+      }
+      throw new Error(`Error en ${endpoint}: ${res.statusText}`);
+    }
+
+    if (res.status === 204) return null;
+    return res.json();
+  };
+
   const fetchComments = async (alienId) => {
     try {
-      const res = await fetch(
-        `http://localhost:8080/comments/alien/${alienId}`,
-      );
-      const data = await res.json();
+      const data = await apiRequest(`/comments/alien/${alienId}`);
       dispatch({ type: "comments/loaded", payload: data });
     } catch (error) {
       console.error("Error al obtener comentarios:", error);
@@ -59,11 +81,7 @@ export function CommentsProvider({ children }) {
 
   const fetchReplies = async (parentId) => {
     try {
-      const res = await fetch(
-        `http://localhost:8080/comments/replies/${parentId}`,
-      );
-      if (!res.ok) throw new Error("No se pudieron obtener las respuestas.");
-      const data = await res.json();
+      const data = await apiRequest(`/comments/replies/${parentId}`);
       data.forEach((reply) => {
         dispatch({ type: "comment/added", payload: reply });
       });
@@ -73,18 +91,23 @@ export function CommentsProvider({ children }) {
   };
 
   const addComment = async (content, parentId = null) => {
+    if (!user) {
+      console.error("No hay usuario autenticado.");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:8080/comments", {
+      console.log(user);
+      console.log(content);
+      const newComment = await apiRequest("/comments", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: 1,
+          userId: user.id, // Ahora usa el ID del usuario autenticado
           alienId: currentAlien.id,
           content,
           parentId,
         }),
       });
-      const newComment = await res.json();
       dispatch({ type: "comment/added", payload: newComment });
     } catch (error) {
       console.error("Error al agregar comentario:", error);
@@ -93,12 +116,10 @@ export function CommentsProvider({ children }) {
 
   const editComment = async (commentId, content) => {
     try {
-      const res = await fetch(`http://localhost:8080/comments/${commentId}`, {
+      const updatedComment = await apiRequest(`/comments/${commentId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content }),
       });
-      const updatedComment = await res.json();
       dispatch({ type: "comment/updated", payload: updatedComment });
     } catch (error) {
       console.error("Error al editar comentario:", error);
@@ -107,9 +128,7 @@ export function CommentsProvider({ children }) {
 
   const removeComment = async (commentId) => {
     try {
-      await fetch(`http://localhost:8080/comments/${commentId}`, {
-        method: "DELETE",
-      });
+      await apiRequest(`/comments/${commentId}`, { method: "DELETE" });
       dispatch({ type: "comment/deleted", payload: commentId });
     } catch (error) {
       console.error("Error al eliminar comentario:", error);

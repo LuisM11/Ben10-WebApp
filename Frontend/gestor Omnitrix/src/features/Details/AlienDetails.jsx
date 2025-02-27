@@ -16,6 +16,8 @@ function AlienDetails() {
     getAlien(id);
   }, [id, getAlien]);
 
+  console.log("id", id);
+
   if (!currentAlien?.id) return <p className="text-white">Cargando...</p>;
 
   return (

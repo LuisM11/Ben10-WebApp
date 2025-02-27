@@ -5,6 +5,7 @@ import {
   useReducer,
   useEffect,
 } from "react";
+import { useAuth } from "./AuthContext"; // 🔥 Importar el contexto de autenticación
 
 const BASE_URL = "http://localhost:8080";
 const AliensContext = createContext();
@@ -14,7 +15,7 @@ const initialState = {
   currentAlien: {},
   transformedAlien: null,
   remainingTime: 0, // ⏳ Estado del temporizador
-  favoritos: [], // ✅ Agregamos el estado de favoritos
+  favoritos: [], // ✅ Estado de favoritos
   allCharacteristicsFavs: [],
   error: "",
 };
@@ -40,8 +41,6 @@ function reducer(state, action) {
     case "favoritos/cargados":
       return { ...state, favoritos: action.payload };
 
-    // case "favoritos/agregado":
-    //   return { ...state, favoritos: [...state.favoritos, action.payload] };
     case "favoritos/agregado":
       return { ...state, favoritos: [...state.favoritos, action.payload] };
 
@@ -57,16 +56,45 @@ function reducer(state, action) {
 }
 
 function AliensProvider({ children }) {
+  const { token } = useAuth(); // 🔥 Obtener el token del contexto de autenticación
   const [
     { currentAlien, transformedAlien, remainingTime, favoritos, state },
     dispatch,
   ] = useReducer(reducer, initialState);
 
+  // 🔥 Función centralizada para peticiones a la API con token
+  const apiRequest = async (endpoint, options = {}) => {
+    if (!token) {
+      console.warn(
+        "🔴 Intento de solicitud sin token. Evitando la petición...",
+      );
+      return null; // Evita hacer la solicitud sin un token válido
+    }
+
+    const res = await fetch(`${BASE_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        ...options.headers,
+      },
+    });
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        console.error("🔴 Token inválido o expirado. Redirigiendo al login...");
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+      throw new Error(`Error en ${endpoint}: ${res.statusText}`);
+    }
+
+    return res.json();
+  };
+
   const fetchActiveTransformation = useCallback(async () => {
     try {
-      const res = await fetch(`${BASE_URL}/transformations/active`);
-
-      const data = await res.json();
+      const data = await apiRequest("/transformations/active");
 
       const storedStartTime = localStorage.getItem("transformationStartTime");
       const storedDuration = localStorage.getItem("transformationDuration");
@@ -76,10 +104,7 @@ function AliensProvider({ children }) {
         return;
       }
 
-      const res2 = await fetch(`${BASE_URL}/aliens/${data.alienId}`);
-      if (!res2.ok) throw new Error("Error al obtener alien transformado");
-
-      const data2 = await res2.json();
+      const data2 = await apiRequest(`/aliens/${data.alienId}`);
 
       if (storedStartTime && storedDuration) {
         const elapsedTime = Math.floor((Date.now() - storedStartTime) / 1000);
@@ -108,8 +133,7 @@ function AliensProvider({ children }) {
       if (Number(id) === currentAlien.id) return;
 
       try {
-        const res = await fetch(`${BASE_URL}/aliens/${id}`);
-        const data = await res.json();
+        const data = await apiRequest(`/aliens/${id}`);
         dispatch({ type: "alien/loaded", payload: data });
       } catch {
         dispatch({
@@ -118,24 +142,18 @@ function AliensProvider({ children }) {
         });
       }
     },
-    [currentAlien.id],
+    [currentAlien.id, apiRequest],
   );
 
   const transformAlien = async (alien) => {
     try {
-      const tiempoTransformacion = 100; //alien.transformationDuration; //TODO: Descomentar, sólo para prueba
-      const startTime = Date.now(); // ⏳ Guardamos la hora actual en milisegundos
+      const tiempoTransformacion = 100;
+      const startTime = Date.now();
 
-      const res = await fetch(`${BASE_URL}/transformations/alien/${alien.id}`, {
+      const data = await apiRequest(`/transformations/alien/${alien.id}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
       });
 
-      if (!res.ok) throw new Error("Error al transformar");
-
-      const data = await res.json();
-
-      // Guardamos en localStorage la hora de inicio y la duración
       localStorage.setItem("transformationStartTime", startTime);
       localStorage.setItem("transformationDuration", tiempoTransformacion);
 
@@ -158,52 +176,29 @@ function AliensProvider({ children }) {
     }
 
     if (remainingTime === 0 && transformedAlien) {
-      resetTransformation(); // Si el tiempo llega a 0, se detiene automáticamente
+      resetTransformation();
     }
   }, [remainingTime, transformedAlien]);
 
   const resetTransformation = async () => {
     try {
-      // Obtener la transformación activa
-      // const res = await fetch(`${BASE_URL}/transformations/active`);
-      // const data = await res.json();
-
-      // if (data.error) {
-      //   console.warn("⚠ No hay transformación activa para eliminar.");
-      //   return;
-      // }
-
-      // Eliminar la transformación correcta
-      const deleteRes = await fetch(`${BASE_URL}/transformations/stop`, {
-        method: "POST",
-      });
-
-      if (!deleteRes.ok) throw new Error("Error al detener la transformación");
-
+      await apiRequest("/transformations/stop", { method: "POST" });
       dispatch({ type: "alien/resetTransformation" });
     } catch (error) {
       console.error("Error al detener la transformación:", error);
     }
   };
 
-  // TODO Descomentar cuando transformaciones estén listas
-
   const addToFavorites = async (alien) => {
     try {
-      const res = await fetch(`${BASE_URL}/users/ben10/favorites/${alien.id}`, {
+      await apiRequest(`/users/ben10/favorites/${alien.id}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
       });
 
-      if (!res.ok) throw new Error("Error al agregar a favoritos");
-
-      // 🔥 En lugar de modificar el estado manualmente, refrescamos la lista de favoritos desde la API
       getFavorites();
       dispatch({
         type: "favoritos/agregado",
-        payload: {
-          alien_id: alien.id,
-        },
+        payload: { alien_id: alien.id },
       });
     } catch (error) {
       console.error("Error al agregar a favoritos:", error);
@@ -211,26 +206,24 @@ function AliensProvider({ children }) {
   };
 
   const getFavorites = useCallback(async () => {
+    if (!token) {
+      console.warn("🔴 No se pudo obtener favoritos porque el token es nulo.");
+      return;
+    }
+
     try {
-      const res = await fetch(`${BASE_URL}/users/ben10/favorites`);
-      if (!res.ok) throw new Error("Error al obtener favoritos");
-
-      const data = await res.json();
-
+      const data = await apiRequest("/users/ben10/favorites");
       dispatch({ type: "favoritos/cargados", payload: data });
     } catch (error) {
       console.error("Error al obtener favoritos:", error);
     }
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const removeFromFavorites = async (alien_id) => {
     try {
-      const res = await fetch(`${BASE_URL}/users/ben10/favorites/${alien_id}`, {
+      await apiRequest(`/users/ben10/favorites/${alien_id}`, {
         method: "DELETE",
       });
-
-      if (!res.ok) throw new Error("Error al eliminar de favoritos");
-
       dispatch({ type: "favoritos/eliminado", payload: alien_id });
     } catch (error) {
       console.error("Error al eliminar de favoritos:", error);
@@ -247,9 +240,9 @@ function AliensProvider({ children }) {
         remainingTime,
         transformAlien,
         resetTransformation,
-        favoritos, // ✅ Exponer favoritos en el contexto
-        addToFavorites, // ✅ Exponer la función para agregar a favoritos
-        removeFromFavorites, // ✅ Exponer la función para eliminar de favoritos
+        favoritos,
+        addToFavorites,
+        removeFromFavorites,
         state,
       }}
     >

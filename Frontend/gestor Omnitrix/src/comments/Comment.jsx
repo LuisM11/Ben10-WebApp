@@ -10,6 +10,7 @@ const Comment = ({ comment }) => {
   // Inicializamos showReplies en true si ya existen respuestas en el estado global
   const replies = comments.filter((c) => c.parentId === comment.id);
   const [showReplies, setShowReplies] = useState(replies.length > 0);
+
   // Al activar la visualización de respuestas, si aún no se han cargado, las buscamos
   useEffect(() => {
     if (showReplies) {

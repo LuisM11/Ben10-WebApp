@@ -8,7 +8,7 @@ function Selector({ aliens }) {
   const [selectedAlien, setSelectedAlien] = useState(null);
   const { transformedAlien } = useAliens();
 
-  console.log(transformedAlien);
+  // console.log(transformedAlien);
 
   const handleSelectChange = (event) => {
     const alienId = Number(event.target.value);
@@ -28,7 +28,7 @@ function Selector({ aliens }) {
   //   }
   // };
 
-  console.log("desde Selector", selectedAlien);
+  // console.log("desde Selector", selectedAlien);
   return (
     <div className="my-10 rounded bg-gray-800 p-4 text-white">
       <div className="flex items-center justify-center space-x-7">
