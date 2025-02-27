@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAliens } from "../contexts/AliensContext";
+import { useAuth } from "../contexts/AuthContext";
 
 function FavoriteLogicButton({ alien }) {
   const { favoritos, addToFavorites, removeFromFavorites, getFavorites } =
     useAliens();
+
+  const { user } = useAuth(); // Obtiene el token y el usuario actual
 
   const [isFavorite, setIsFavorite] = useState(false);
   useEffect(() => {
@@ -37,7 +40,8 @@ function FavoriteLogicButton({ alien }) {
         isFavorite ? "text-red-500" : "text-gray-400"
       } hover:text-red-600`}
     >
-      {isFavorite ? "❤️" : "🤍"}
+      {(isFavorite && user.id === 1 ? "❤️" : user.id === 1 && "🤍") ||
+        (isFavorite && "es uno de los fav de ben")}
     </button>
   );
 }
