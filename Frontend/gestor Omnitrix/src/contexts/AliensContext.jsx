@@ -68,7 +68,6 @@ function AliensProvider({ children }) {
       if (!token || isTokenExpired()) {
         console.warn("🔴 Token inválido o expirado. Evitando petición...");
         logout();
-        window.location.href = "/login";
         return null;
       }
 
@@ -82,19 +81,12 @@ function AliensProvider({ children }) {
       });
 
       if (!res.ok) {
-        if (res.status === 401) {
-          console.error(
-            "🔴 Token inválido o expirado. Redirigiendo al login...",
-          );
-          localStorage.removeItem("token");
-          window.location.href = "/login";
-        }
         throw new Error(`Error en ${endpoint}: ${res.statusText}`);
       }
 
       return res.json();
     },
-    [token, isTokenExpired, logout], // Only depends on token changes
+    [token, isTokenExpired, logout],
   );
 
   const fetchActiveTransformation = useCallback(async () => {
@@ -154,10 +146,16 @@ function AliensProvider({ children }) {
 
   const getAlien = useCallback(
     async function getAlien(id) {
-      if (Number(id) === currentAlien.id) return;
+      if (Number(id) === currentAlien?.id) return; // ✅ Usa opcional chaining para evitar el error
 
       try {
         const data = await apiRequest(`/aliens/${id}`);
+
+        if (!data) {
+          console.warn("⚠ No se pudo cargar el alien, el API devolvió null.");
+          return; // ✅ Evita actualizar el estado con datos inválidos
+        }
+
         dispatch({ type: "alien/loaded", payload: data });
       } catch {
         dispatch({
@@ -166,7 +164,7 @@ function AliensProvider({ children }) {
         });
       }
     },
-    [currentAlien.id, apiRequest],
+    [currentAlien?.id, apiRequest], // ✅ Opcional chaining en la dependencia
   );
 
   const transformAlien = async (alien) => {
@@ -238,9 +236,18 @@ function AliensProvider({ children }) {
 
     try {
       const data = await apiRequest("/users/ben10/favorites");
-      dispatch({ type: "favoritos/cargados", payload: data });
+
+      if (!data) {
+        console.warn(
+          "⚠ La API devolvió null en favoritos. Se usará un array vacío.",
+        );
+        dispatch({ type: "favoritos/cargados", payload: [] }); // ✅ Evita que favoritos sea null
+      } else {
+        dispatch({ type: "favoritos/cargados", payload: data });
+      }
     } catch (error) {
       console.error("Error al obtener favoritos:", error);
+      dispatch({ type: "favoritos/cargados", payload: [] }); // ✅ Asegura que siempre haya un array
     }
   }, [dispatch, token, apiRequest]);
 

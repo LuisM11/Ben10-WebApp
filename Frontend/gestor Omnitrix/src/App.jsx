@@ -16,8 +16,14 @@ import { useEffect } from "react";
 
 // 🔐 Componente para proteger rutas
 function PrivateRoute({ children }) {
-  const { token } = useAuth();
-  return token ? children : <Navigate to="/login" replace />;
+  const { token, isTokenExpired, logout } = useAuth();
+  console.log("hola desde privateroute");
+  if (!token || isTokenExpired()) {
+    logout(); // 🔥 Asegura que el estado global se limpie
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 }
 
 // 🔄 Nuevo componente para el interceptor
@@ -30,6 +36,7 @@ function AuthInterceptor() {
     window.fetch = async (...args) => {
       const res = await originalFetch(...args);
       if (res.status === 401) {
+        console.log("entro a 401");
         logout();
         window.location.href = "/login";
       }
@@ -81,7 +88,6 @@ function App() {
     <AuthProvider>
       <AliensProvider>
         <CommentsProvider>
-          {/* 🔄 Agregar el interceptor dentro de los providers */}
           <AuthInterceptor />
           <RouterProvider router={router} />
         </CommentsProvider>
