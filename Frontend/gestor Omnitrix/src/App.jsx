@@ -12,11 +12,36 @@ import AlienDetails from "./features/Details/AlienDetails";
 import { AliensProvider } from "./contexts/AliensContext";
 import { CommentsProvider } from "./contexts/CommentsContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { useEffect } from "react";
 
 // 🔐 Componente para proteger rutas
 function PrivateRoute({ children }) {
   const { token } = useAuth();
   return token ? children : <Navigate to="/login" replace />;
+}
+
+// 🔄 Nuevo componente para el interceptor
+function AuthInterceptor() {
+  const { logout } = useAuth();
+
+  useEffect(() => {
+    const originalFetch = window.fetch;
+
+    window.fetch = async (...args) => {
+      const res = await originalFetch(...args);
+      if (res.status === 401) {
+        logout();
+        window.location.href = "/login";
+      }
+      return res;
+    };
+
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, [logout]);
+
+  return null; // No renderiza nada
 }
 
 const router = createBrowserRouter([
@@ -56,6 +81,8 @@ function App() {
     <AuthProvider>
       <AliensProvider>
         <CommentsProvider>
+          {/* 🔄 Agregar el interceptor dentro de los providers */}
+          <AuthInterceptor />
           <RouterProvider router={router} />
         </CommentsProvider>
       </AliensProvider>

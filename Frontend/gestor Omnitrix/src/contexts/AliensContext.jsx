@@ -56,7 +56,7 @@ function reducer(state, action) {
 }
 
 function AliensProvider({ children }) {
-  const { token } = useAuth(); // 🔥 Obtener el token del contexto de autenticación
+  const { token, isTokenExpired, logout } = useAuth(); // 🔥 Obtener el token del contexto de autenticación
   const [
     { currentAlien, transformedAlien, remainingTime, favoritos, state },
     dispatch,
@@ -65,10 +65,10 @@ function AliensProvider({ children }) {
   // 🔥 Función centralizada para peticiones a la API con token
   const apiRequest = useCallback(
     async (endpoint, options = {}) => {
-      if (!token) {
-        console.warn(
-          "🔴 Intento de solicitud sin token. Evitando la petición...",
-        );
+      if (!token || isTokenExpired()) {
+        console.warn("🔴 Token inválido o expirado. Evitando petición...");
+        logout();
+        window.location.href = "/login";
         return null;
       }
 
@@ -94,7 +94,7 @@ function AliensProvider({ children }) {
 
       return res.json();
     },
-    [token], // Only depends on token changes
+    [token, isTokenExpired, logout], // Only depends on token changes
   );
 
   const fetchActiveTransformation = useCallback(async () => {
