@@ -27,29 +27,29 @@ function PrivateRoute({ children }) {
 }
 
 // 🔄 Nuevo componente para el interceptor
-function AuthInterceptor() {
-  const { logout } = useAuth();
+// function AuthInterceptor() {
+//   const { logout } = useAuth();
 
-  useEffect(() => {
-    const originalFetch = window.fetch;
+//   useEffect(() => {
+//     const originalFetch = window.fetch;
 
-    window.fetch = async (...args) => {
-      const res = await originalFetch(...args);
-      if (res.status === 401) {
-        console.log("entro a 401");
-        logout();
-        window.location.href = "/login";
-      }
-      return res;
-    };
+//     window.fetch = async (...args) => {
+//       const res = await originalFetch(...args);
+//       if (res.status === 401) {
+//         console.log("entro a 401");
+//         logout();
+//         window.location.href = "/login";
+//       }
+//       return res;
+//     };
 
-    return () => {
-      window.fetch = originalFetch;
-    };
-  }, [logout]);
+//     return () => {
+//       window.fetch = originalFetch;
+//     };
+//   }, [logout]);
 
-  return null; // No renderiza nada
-}
+//   return null; // No renderiza nada
+// }
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -88,7 +88,7 @@ function App() {
     <AuthProvider>
       <AliensProvider>
         <CommentsProvider>
-          <AuthInterceptor />
+          {/* <AuthInterceptor /> */}
           <RouterProvider router={router} />
         </CommentsProvider>
       </AliensProvider>

@@ -13,7 +13,6 @@ function FavoriteLogicButton({ alien }) {
     getFavorites(); // ✅ Llamamos a getFavorites() al montar el componente
   }, [getFavorites]);
 
-  console.log("favoritos", favoritos);
   useEffect(() => {
     const favoritoEncontrado = favoritos.some((fav) => fav.id === alien.id);
     setIsFavorite(favoritoEncontrado);

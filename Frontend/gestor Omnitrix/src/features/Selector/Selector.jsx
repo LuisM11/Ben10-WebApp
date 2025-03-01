@@ -6,25 +6,21 @@ import TransformationTimer from "../Transformation/TransformationTimer";
 import ButtonTransform from "../../UI/ButtonTransform";
 import ButtonStopTransform from "../../UI/ButtonStopTransform";
 import { useAuth } from "../../contexts/AuthContext";
+import ScrollLinked from "../../UI/ScrollLinked";
 
 function Selector({ aliens }) {
   const [selectedAlien, setSelectedAlien] = useState(null);
   const { transformedAlien } = useAliens();
-  const { user } = useAuth(); // Obtiene el token y el usuario actual
-
+  const { user } = useAuth();
   const alienImageRef = useRef(null);
 
-  const handleSelectChange = (event) => {
-    const alienId = Number(event.target.value);
-    const alienFound = aliens.find((alien) => alien.id === alienId) || null;
-    setSelectedAlien(alienFound);
+  const handleSelectAlien = (alien) => {
+    setSelectedAlien(alien);
   };
 
   // 🟢 Animación de vibración + Reproducir sonido al transformarse
   useGSAP(() => {
     if (transformedAlien) {
-      // 🔊 Reproducir sonido de transformación
-      // Vibración de la imagen
       gsap.fromTo(
         alienImageRef.current,
         { x: -5 },
@@ -37,73 +33,54 @@ function Selector({ aliens }) {
         },
       );
     }
-  }, [transformedAlien]); // Se ejecuta solo cuando transformedAlien cambia
+  }, [transformedAlien]);
 
   return (
     <div className="my-10 rounded bg-gray-800 p-4 text-white">
-      <div className="flex items-center justify-center space-x-7">
-        {/* Selector y botón de transformación */}
+      <div className="flex flex-col items-center space-y-6">
+        {/* Título */}
         {!transformedAlien && (
-          <div className="flex w-1/3 flex-col sm:items-center">
-            <h2 className="mb-2 text-xl">Selector de Aliens</h2>
-            <div className="mb-4">
-              <label htmlFor="alien-select" className="mb-2 block">
-                Elige un alien:
-              </label>
-              <select
-                id="alien-select"
-                className="w-full rounded bg-gray-700 p-2"
-                onChange={handleSelectChange}
-              >
-                <option value="">Selecciona un alien</option>
-                {aliens.map((alien) => (
-                  <option key={alien.id} value={alien.id}>
-                    {alien.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {selectedAlien && !transformedAlien && user.id === 1 ? (
-              <ButtonTransform selectedAlien={selectedAlien} />
-            ) : (
-              <>
-                <div className="flex justify-center gap-2 sm:justify-normal">
-                  {user.id === 1 ? (
-                    transformedAlien && <ButtonStopTransform />
-                  ) : transformedAlien ? (
-                    <p>Ben 10 está transformado ahora mismo...</p>
-                  ) : (
-                    "Ben descansa ahora mismo"
-                  )}
-                </div>
-                <TransformationTimer />
-              </>
-            )}
-          </div>
+          <h2 className="mb-2 text-xl font-bold">
+            {user.id === 1
+              ? `Elige un alien y transformate`
+              : `Estos son los aliens de Ben`}
+          </h2>
         )}
 
-        {/* Imagen y efecto de transformación */}
+        {/* Scroll de Aliens (Reemplaza el Select) */}
+        {!transformedAlien && (
+          <ScrollLinked
+            aliens={aliens}
+            onSelect={handleSelectAlien}
+            selectedAlien={selectedAlien}
+          />
+        )}
+
+        {/* Botón de transformación */}
+        {selectedAlien && !transformedAlien && user.id === 1 ? (
+          <ButtonTransform selectedAlien={selectedAlien} />
+        ) : (
+          <>
+            <div className="flex justify-center gap-2 sm:justify-normal"></div>
+          </>
+        )}
+
+        {/* Imagen y Efecto de Transformación */}
         <div className={`${!transformedAlien ? "w-2/3" : ""}`}>
           {selectedAlien && !transformedAlien ? (
             <div className="text-center">
-              <img
-                src={selectedAlien.imageUrl}
-                alt={selectedAlien.name}
-                className="mx-auto h-32 w-32 rounded object-contain grayscale filter transition-all duration-500"
-              />
               <p className="mt-2 text-gray-400">
                 Alien seleccionado: {selectedAlien.name}
               </p>
             </div>
           ) : transformedAlien ? (
-            <div className="flex items-center gap-1 sm:flex-row">
+            <div className="flex items-center gap-4 sm:flex-row">
               <div className="w-1/2">
                 <img
                   ref={alienImageRef}
                   src={transformedAlien.imageUrl}
                   alt={transformedAlien.name}
-                  className="mx-auto h-32 w-32 rounded border-4 border-green-500 object-contain"
+                  className="mx-auto h-32 w-32 rounded-full border-4 border-green-500 object-contain"
                 />
                 <p className="mt-2 text-center text-green-400">
                   {user.id === 1
@@ -112,10 +89,8 @@ function Selector({ aliens }) {
                 </p>
               </div>
               <div className="flex w-1/2 flex-col items-center">
-                <div>{user.id === 1 && <ButtonStopTransform />}</div>
-                <div>
-                  <TransformationTimer />
-                </div>
+                {user.id === 1 && <ButtonStopTransform />}
+                <TransformationTimer />
               </div>
             </div>
           ) : null}

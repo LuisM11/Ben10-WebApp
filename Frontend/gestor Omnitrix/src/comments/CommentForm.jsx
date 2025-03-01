@@ -4,7 +4,6 @@ const CommentForm = ({ submitLabel, handleSubmit, initialText = "" }) => {
   const [text, setText] = useState(initialText);
   const isTextareaDisabled = text.length === 0;
 
-  console.log("Comment form");
   const onSubmit = (event) => {
     event.preventDefault();
     handleSubmit(text);
@@ -12,14 +11,19 @@ const CommentForm = ({ submitLabel, handleSubmit, initialText = "" }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="mt-2">
+    <form onSubmit={onSubmit} className="mt-2 space-y-2">
       <textarea
-        className="text-bl w-full rounded border p-2 text-black"
+        className="w-full rounded-lg border-2 border-[#8be308] bg-gray-800 p-2 text-white focus:outline-none focus:ring-2 focus:ring-[#8be308]"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        placeholder="Escribe un comentario..."
       />
       <button
-        className="mt-2 rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+        className={`w-full rounded-lg px-4 py-2 text-white transition ${
+          isTextareaDisabled
+            ? "cursor-not-allowed bg-gray-500"
+            : "bg-[#8be308] hover:bg-green-600"
+        }`}
         disabled={isTextareaDisabled}
       >
         {submitLabel}
