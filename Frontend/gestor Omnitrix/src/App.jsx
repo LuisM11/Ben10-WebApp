@@ -12,12 +12,44 @@ import AlienDetails from "./features/Details/AlienDetails";
 import { AliensProvider } from "./contexts/AliensContext";
 import { CommentsProvider } from "./contexts/CommentsContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { useEffect } from "react";
 
 // 🔐 Componente para proteger rutas
 function PrivateRoute({ children }) {
-  const { token } = useAuth();
-  return token ? children : <Navigate to="/login" replace />;
+  const { token, isTokenExpired, logout } = useAuth();
+  console.log("hola desde privateroute");
+  if (!token || isTokenExpired()) {
+    logout(); // 🔥 Asegura que el estado global se limpie
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 }
+
+// 🔄 Nuevo componente para el interceptor
+// function AuthInterceptor() {
+//   const { logout } = useAuth();
+
+//   useEffect(() => {
+//     const originalFetch = window.fetch;
+
+//     window.fetch = async (...args) => {
+//       const res = await originalFetch(...args);
+//       if (res.status === 401) {
+//         console.log("entro a 401");
+//         logout();
+//         window.location.href = "/login";
+//       }
+//       return res;
+//     };
+
+//     return () => {
+//       window.fetch = originalFetch;
+//     };
+//   }, [logout]);
+
+//   return null; // No renderiza nada
+// }
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -56,6 +88,7 @@ function App() {
     <AuthProvider>
       <AliensProvider>
         <CommentsProvider>
+          {/* <AuthInterceptor /> */}
           <RouterProvider router={router} />
         </CommentsProvider>
       </AliensProvider>

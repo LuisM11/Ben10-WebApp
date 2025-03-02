@@ -6,6 +6,8 @@ export async function getAliens(token) {
     throw new Error("Token no disponible");
   }
 
+  console.log("token", token);
+
   const res = await fetch(`http://localhost:8080/aliens`, {
     method: "GET",
     headers: {
