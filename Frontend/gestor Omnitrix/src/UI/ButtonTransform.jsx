@@ -48,6 +48,11 @@ function ButtonTransform({ selectedAlien }) {
       ref={buttonRef}
       className={`${styles.neon__button} relative transition-all duration-300`}
       onClick={handleTransform}
+      style={{
+        backgroundImage: `url(/OmnitrixInicial.png)`,
+        backgroundSize: "150%",
+        backgroundPosition: "center",
+      }}
     >
       <div className={styles.reloj} />
       <div className={styles.rombo}>
