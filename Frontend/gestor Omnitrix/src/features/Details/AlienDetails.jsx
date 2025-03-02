@@ -39,7 +39,7 @@ function AlienDetails() {
                   {user.id === 1 ? (
                     <ButtonStopTransform />
                   ) : transformedAlien ? (
-                    <p>Ben 10 está transformado ahora mismo...</p>
+                    <p>Ben 10 está transformado ahora mismo!</p>
                   ) : (
                     "Ben descansa ahora mismo"
                   )}

@@ -169,7 +169,7 @@ function AliensProvider({ children }) {
 
   const transformAlien = async (alien) => {
     try {
-      const tiempoTransformacion = 100;
+      const tiempoTransformacion = 15;
       const startTime = Date.now();
 
       const data = await apiRequest(`/transformations/alien/${alien.id}`, {

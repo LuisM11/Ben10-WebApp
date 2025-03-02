@@ -17,7 +17,6 @@ import { useEffect } from "react";
 // 🔐 Componente para proteger rutas
 function PrivateRoute({ children }) {
   const { token, isTokenExpired, logout } = useAuth();
-  console.log("hola desde privateroute");
   if (!token || isTokenExpired()) {
     logout(); // 🔥 Asegura que el estado global se limpie
     return <Navigate to="/login" replace />;

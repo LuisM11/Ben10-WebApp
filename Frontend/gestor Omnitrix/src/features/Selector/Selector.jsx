@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useAliens } from "../../contexts/AliensContext";
@@ -42,7 +42,7 @@ function Selector({ aliens }) {
         {!transformedAlien && (
           <h2 className="mb-2 text-xl font-bold">
             {user.id === 1
-              ? `Elige un alien y transformate`
+              ? `Elige un alien y transfórmate`
               : `Estos son los aliens de Ben`}
           </h2>
         )}

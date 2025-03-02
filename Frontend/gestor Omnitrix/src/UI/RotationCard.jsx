@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 function RotationCard({ alien, type }) {
   const [isFlipped, setIsFlipped] = useState(false);
-  console.log("rotationcard");
 
   function handleFlip() {
     setIsFlipped((prev) => !prev);
@@ -65,7 +64,7 @@ function RotationCard({ alien, type }) {
               className="text-sm font-semibold text-blue-400 hover:text-blue-600"
               onClick={(e) => e.stopPropagation()}
             >
-              Ver más
+              Detalles
             </Link>
           </div>
         </div>

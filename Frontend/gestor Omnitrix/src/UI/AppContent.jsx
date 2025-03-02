@@ -8,7 +8,6 @@ function AppContent() {
   const { token } = useAuth();
   const [aliens, setAliens] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("hola desde AppContent");
 
   useEffect(() => {
     if (token) {
