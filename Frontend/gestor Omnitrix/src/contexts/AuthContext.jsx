@@ -64,7 +64,7 @@ export function AuthProvider({ children }) {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || "Error en el registro");
+        throw new Error(errorData.error || "Error en el registro");
       }
 
       return await res.json();

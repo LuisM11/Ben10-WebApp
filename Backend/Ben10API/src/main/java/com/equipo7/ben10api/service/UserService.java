@@ -51,6 +51,11 @@ public class UserService {
             }
         }
 
+        // Ensure usernames are not repeated
+        if (getUserByUsername(createUserDTO.getUsername()).isPresent()) {
+            throw new UsernameAlreadyExistsException("Este nombre de usuario ya existe!");
+        }
+
         User user = new User();
         user.setUsername(createUserDTO.getUsername());
         user.setUserType(createUserDTO.getUserType());

@@ -86,6 +86,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UsernameAlreadyExistsException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleCommentNotFound(CommentNotFoundException ex) {
         Map<String, String> errorResponse = new HashMap<>();
