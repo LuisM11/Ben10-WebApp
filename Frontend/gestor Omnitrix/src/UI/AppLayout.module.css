@@ -1,0 +1,6 @@
+.omnitrixbg{
+    background: url("/OmnitrixPresentation.png") no-repeat;
+    /*background: url("/pipe-omnitrix1.jpg") no-repeat;*/
+    background-size: cover;
+    justify-content: center;
+}
