@@ -100,7 +100,7 @@ export function CommentsProvider({ children }) {
       const newComment = await apiRequest("/comments", {
         method: "POST",
         body: JSON.stringify({
-          userId: user.id, // Ahora usa el ID del usuario autenticado
+          userId: user.id,
           alienId: currentAlien.id,
           content,
           parentId,

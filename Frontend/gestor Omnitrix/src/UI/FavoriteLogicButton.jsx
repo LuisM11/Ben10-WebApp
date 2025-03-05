@@ -6,11 +6,11 @@ function FavoriteLogicButton({ alien }) {
   const { favoritos, addToFavorites, removeFromFavorites, getFavorites } =
     useAliens();
 
-  const { user } = useAuth(); // Obtiene el token y el usuario actual
+  const { user } = useAuth();
 
   const [isFavorite, setIsFavorite] = useState(false);
   useEffect(() => {
-    getFavorites(); // ✅ Llamamos a getFavorites() al montar el componente
+    getFavorites();
   }, [getFavorites]);
 
   useEffect(() => {

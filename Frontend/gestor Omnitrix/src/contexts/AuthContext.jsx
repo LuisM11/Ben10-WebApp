@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
 
       const data = await res.json();
       setToken(data.token);
-      setUser({ id: data.id, username: data.username }); // Guarda el userId globalmente
+      setUser({ id: data.id, username: data.username });
       setUserType(data.userType);
     } catch (error) {
       console.error("Error en login:", error.message);

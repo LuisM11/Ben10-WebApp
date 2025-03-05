@@ -15,13 +15,12 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { useEffect } from "react";
 import { useAuth } from "./contexts/AuthContext";
 
-// 🔐 Componente para proteger rutas
 function PrivateRoute({ children }) {
   const { token, isTokenExpired, logout } = useAuth();
 
   useEffect(() => {
     if (!token || isTokenExpired()) {
-      logout(); // Esta llamada ahora está dentro de un useEffect
+      logout();
     }
   }, [token, isTokenExpired, logout]);
 

@@ -11,7 +11,6 @@ function AppContent() {
 
   useEffect(() => {
     if (token) {
-      // Solo llama a getAliens si hay un token válido
       getAliens(token)
         .then((data) => {
           setAliens(data);

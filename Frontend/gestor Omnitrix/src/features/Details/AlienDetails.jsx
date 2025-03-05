@@ -21,7 +21,7 @@ function AlienDetails() {
   if (!currentAlien?.id) return <p className="text-white">Cargando...</p>;
 
   return (
-    <div className="my-10 rounded bg-gray-800 p-6 text-white">
+    <div className="my-10 rounded p-6 text-white">
       <div className="flex flex-col gap-6 md:flex-row">
         {/* Imagen del Alien */}
         <div className="w-full md:w-1/2">
@@ -50,17 +50,13 @@ function AlienDetails() {
           </div>
         </div>
 
-        {/* Descripción y estadísticas */}
         <div className="flex w-full flex-col items-start text-sm md:w-1/2 md:text-lg">
-          {/* Botón de favoritos centrado */}
           <div className="flex w-full justify-center">
             <FavoriteLogicButton alien={currentAlien} />
           </div>
 
-          {/* Descripción */}
           <p className="mt-4 w-full text-center">{currentAlien.description}</p>
 
-          {/* 🔥 Lista de estadísticas con barras más delgadas */}
           <div className="mt-4 w-full space-y-3">
             {Object.entries(currentAlien.stats || {}).map(
               ([key, value], index) => (
@@ -95,7 +91,6 @@ function AlienDetails() {
         </div>
       )}
 
-      {/* 🔥 Sección de comentarios */}
       <CommentSection />
     </div>
   );

@@ -18,7 +18,6 @@ function Selector({ aliens }) {
     setSelectedAlien(alien);
   };
 
-  // 🟢 Animación de vibración + Reproducir sonido al transformarse
   useGSAP(() => {
     if (transformedAlien) {
       gsap.fromTo(
@@ -36,18 +35,19 @@ function Selector({ aliens }) {
   }, [transformedAlien]);
 
   return (
-    <div className="my-10 rounded bg-gray-800 p-4 text-white" style={{backgroundImage: "url('/salon.jpg')"}}>
+    <div
+      className="my-10 rounded bg-gray-800 p-4 text-white"
+      style={{ backgroundImage: "url('/salon.jpg')" }}
+    >
       <div className="flex flex-col items-center space-y-6">
-        {/* Título */}
         {!transformedAlien && (
-          <h2 className="mb-2 text-xl font-bold">
+          <h2 className="mb-2 p-3 text-xl font-bold">
             {user.id === 1
               ? `Elige un alien y transfórmate`
               : `Estos son los aliens de Ben`}
           </h2>
         )}
 
-        {/* Scroll de Aliens (Reemplaza el Select) */}
         {!transformedAlien && (
           <ScrollLinked
             aliens={aliens}
@@ -56,7 +56,6 @@ function Selector({ aliens }) {
           />
         )}
 
-        {/* Botón de transformación */}
         {selectedAlien && !transformedAlien && user.id === 1 ? (
           <ButtonTransform selectedAlien={selectedAlien} />
         ) : (
@@ -65,7 +64,6 @@ function Selector({ aliens }) {
           </>
         )}
 
-        {/* Imagen y Efecto de Transformación */}
         <div className={`${!transformedAlien ? "w-2/3" : ""}`}>
           {selectedAlien && !transformedAlien ? (
             <div className="text-center">
@@ -82,7 +80,7 @@ function Selector({ aliens }) {
                   alt={transformedAlien.name}
                   className="mx-auto h-32 w-32 rounded-full border-4 border-green-500 object-contain"
                 />
-                <p className="mt-2 text-center text-green-400">
+                <p className="mt-2 text-center text-white">
                   {user.id === 1
                     ? `Estás transformado en ${transformedAlien.name}`
                     : `Ben 10 está transformado en ${transformedAlien.name}`}

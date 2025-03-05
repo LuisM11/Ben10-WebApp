@@ -14,7 +14,6 @@ export default function ScrollLinked({ aliens, onSelect, selectedAlien }) {
   const { scrollXProgress } = useScroll({ container: ref });
   const maskImage = useScrollOverflowMask(scrollXProgress);
 
-  // Center the selected alien when it changes
   useEffect(() => {
     if (ref.current && selectedAlien) {
       const container = ref.current;
@@ -27,10 +26,8 @@ export default function ScrollLinked({ aliens, onSelect, selectedAlien }) {
         const itemLeft = selectedItem.offsetLeft;
         const itemWidth = selectedItem.offsetWidth;
 
-        // Calculate scroll position to center the item
         const scrollPosition = itemLeft - containerWidth / 2 + itemWidth / 2;
 
-        // Smooth scroll to the position
         container.scrollTo({
           left: scrollPosition,
           behavior: "smooth",
@@ -41,7 +38,6 @@ export default function ScrollLinked({ aliens, onSelect, selectedAlien }) {
 
   return (
     <div className="lg:max-w-[500px] relative w-full max-w-[350px] md:max-w-[400px]">
-      {/* Progress indicator circle */}
       <svg
         className="absolute -left-4 -top-16 h-20 w-20 -rotate-90"
         viewBox="0 0 100 100"
@@ -62,7 +58,6 @@ export default function ScrollLinked({ aliens, onSelect, selectedAlien }) {
         />
       </svg>
 
-      {/* Container with gradient mask for side shadows */}
       <motion.ul
         ref={ref}
         style={{ maskImage }}
@@ -93,7 +88,6 @@ export default function ScrollLinked({ aliens, onSelect, selectedAlien }) {
   );
 }
 
-// Function to create a gradient mask that fades out items on the edges
 function useScrollOverflowMask(scrollXProgress) {
   const maskImage = useMotionValue(
     `linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)`,
@@ -101,19 +95,16 @@ function useScrollOverflowMask(scrollXProgress) {
 
   useMotionValueEvent(scrollXProgress, "change", (value) => {
     if (value === 0) {
-      // At the start of the scroll
       animate(
         maskImage,
         `linear-gradient(90deg, #000, #000 80%, #000 90%, transparent)`,
       );
     } else if (value === 1) {
-      // At the end of the scroll
       animate(
         maskImage,
         `linear-gradient(90deg, transparent, #000 10%, #000 20%, #000)`,
       );
     } else {
-      // In the middle of the scroll
       animate(
         maskImage,
         `linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)`,

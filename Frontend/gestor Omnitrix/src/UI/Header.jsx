@@ -1,51 +1,53 @@
-import { useAuth } from "../contexts/AuthContext"; // Asegúrate de importar el contexto correctamente
+import { useAuth } from "../contexts/AuthContext";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
 
 function Header() {
-  const { user, token, logout } = useAuth(); // Obtiene el usuario y la función logout
-  const isAuthenticated = !!token; // Si hay token, el usuario está autenticado
+  const { user, token, logout } = useAuth();
+  const isAuthenticated = !!token;
 
   return (
-    <header className="flex flex-wrap items-center justify-between bg-gray-800 p-4 text-white">
-      <Logo />
+    <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between bg-opacity-80 p-4 text-white shadow-md backdrop-blur-md">
+      <div className="flex items-center gap-3">
+        <Logo />
+      </div>
 
       <nav>
         {isAuthenticated ? (
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <Link
               to="/favorites"
-              className="flex items-center gap-2 hover:underline"
+              className="flex items-center gap-2 transition-colors hover:text-green-400"
             >
-              <span className="material-symbols-outlined sm:hidden">
-                bookmark_star
+              <span className="material-symbols-outlined text-xl">
+                bookmark
               </span>
-              <span className="hidden sm:block">Favoritos</span>
+              <span className="hidden font-semibold sm:block">Favoritos</span>
             </Link>
 
-            {/* Botón de Logout funcional */}
             <button
-              onClick={logout} // Llama a la función logout del contexto
-              className="flex items-center gap-2 rounded bg-red-500 px-3 py-1 hover:bg-red-600"
+              onClick={logout}
+              className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold transition-transform hover:bg-red-700 active:scale-95"
             >
-              <span className="material-symbols-outlined sm:hidden">
-                logout
-              </span>
-              <span className="hidden sm:block">Logout</span>
+              <span className="material-symbols-outlined text-lg">logout</span>
+              <span className="hidden sm:block">Salir</span>
             </button>
 
-            {/* Icono de usuario con su nombre */}
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-gray-500"></div>
-              <span className="hidden sm:block">{user?.username}</span>
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-green-400 bg-gray-700 text-sm font-bold uppercase">
+                {user?.username[0]}
+              </div>
+              <span className="hidden font-medium text-green-300 sm:block">
+                {user?.username}
+              </span>
             </div>
           </div>
         ) : (
           <Link
             to="/login"
-            className="rounded bg-blue-500 px-3 py-1 hover:bg-blue-600"
+            className="rounded-lg bg-green-500 px-4 py-2 font-semibold text-gray-900 transition-colors hover:bg-green-600"
           >
-            Login
+            Iniciar sesión
           </Link>
         )}
       </nav>
