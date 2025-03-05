@@ -6,7 +6,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
 ✅ **Node.js** (versión recomendada: `22.x` o superior)  
 ✅ **npm**  
 ✅ **Git**   
-✅ **MySQL** (version LTS )
+✅ **MySQL** (version LTS 8 )
 #### ✅ **Java 17 o superior**
 
    - Instalar el **JDK (Java Development Kit)**   
@@ -16,8 +16,9 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
      java -version
      echo $JAVA_HOME  # Linux/macOS
      echo %JAVA_HOME%  # Windows
-     ```  
+     ``` 
 ✅ **Maven**
+   - Configurar la **variable de entorno `MAVEN_HOME`** apuntando a la carpeta .zip ya descomprimida de maven
    - Verificar la instalación con:  
      ```sh
      mvn -version
@@ -25,11 +26,12 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
 
 
 > ⚠ **Advertencia:** Antes de ejecutar el script, asegúrate de:
+> - **Windows** Agregar a %path% las direcciones pertinentes de /bin para **Java y Maven** usando las variables de entorno ya establecidas
 > - Modificar las **variables de entorno** en los archivos `run.sh` y `run.bat` segun el caso:
 >   - `DB_USERNAME` → Usuario de la base de datos.
 >   - `DB_PASSWORD` → Contraseña de la base de datos.
 > - Verificar que **MySQL está corriendo** en el puerto correcto (`3306` por defecto).
-> - En **Windows**, ejecutar el script como **Administrador**.
+> - En **Windows**, iniciar una instancia de CMD como **Administrador**, ir a la carpeta y correr el archivo *run.bat*.
 > - En **Linux/macOS**, dar permisos con `chmod +x run.sh stop.sh`.
 
 ---
