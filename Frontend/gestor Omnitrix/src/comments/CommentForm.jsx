@@ -22,7 +22,7 @@ const CommentForm = ({ submitLabel, handleSubmit, initialText = "" }) => {
         className={`w-full rounded-lg px-4 py-2 text-white transition ${
           isTextareaDisabled
             ? "cursor-not-allowed bg-gray-500"
-            : "bg-[#8be308] hover:bg-green-600"
+            : "bg-[#8be308] hover:bg-[#7dbd07]"
         }`}
         disabled={isTextareaDisabled}
       >
