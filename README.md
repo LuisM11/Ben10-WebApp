@@ -31,7 +31,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
 >   - `DB_USERNAME` → Usuario de la base de datos.
 >   - `DB_PASSWORD` → Contraseña de la base de datos.
 > - Verificar que **MySQL está corriendo** en el puerto correcto (`3306` por defecto).
-> - En **Windows**, iniciar una instancia de CMD como **Administrador**, ir a la carpeta y correr el archivo *run.bat*.
+> - En **Windows**, iniciar una instancia de CMD (No powershell) como **Administrador**, ir a la carpeta y correr el archivo *run.bat*.
 > - En **Linux/macOS**, dar permisos con `chmod +x run.sh stop.sh`.
 
 ---
@@ -59,6 +59,10 @@ chmod +x run.sh stop.sh
 *Este comando cerrará tanto el backend como el frontend.*
 
 ### **🔹 En Windows**
+
+> [!IMPORTANT]
+> Puedes dar doble-click sobre el archivo run en Windows, si no funciona y necesitas permisos ejecuta una terminal CMD como admin ⬇️
+
 
 1️⃣ **Ejecutar CMD como Administrador** *(Recomendado para evitar problemas de permisos).📌 Presiona Win + S y busca "Símbolo del sistema" → Clic derecho → Ejecutar como administrador.*
 
