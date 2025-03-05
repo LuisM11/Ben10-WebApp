@@ -1,6 +1,7 @@
-.omnitrixbg{
-    background: url("/OmnitrixPresentation.png") no-repeat;
-    /*background: url("/pipe-omnitrix1.jpg") no-repeat;*/
+.omnitrixbg {
+    background: linear-gradient(#48b649, #d9e132);
     background-size: cover;
-    justify-content: center;
+    
 }
+
+
