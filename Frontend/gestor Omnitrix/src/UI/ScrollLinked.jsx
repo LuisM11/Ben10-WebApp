@@ -75,7 +75,7 @@ export default function ScrollLinked({ aliens, onSelect, selectedAlien }) {
             className={`h-[120px] w-[120px] flex-none cursor-pointer overflow-hidden rounded-full border-4 transition-all duration-300 ${
               selectedAlien?.id === alien.id
                 ? "scale-110 border-[#8be308] shadow-lg shadow-green-500/30"
-                : "border-gray-600 opacity-80 hover:opacity-100"
+                : "border-gray-200 opacity-80 hover:opacity-100"
             }`}
             onClick={() => onSelect(alien)}
             whileHover={{ scale: 1.05 }}
