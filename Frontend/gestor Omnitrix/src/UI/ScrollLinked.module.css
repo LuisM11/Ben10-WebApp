@@ -1,0 +1,27 @@
+.scrollbar-thin::-webkit-scrollbar {
+  height: 8px;
+  cursor: pointer;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #1a1a2e 10%,
+    #1a1a2e 90%,
+    transparent
+  );
+  border-radius: 20px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #8be308, #a8ff00, #8be308);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px rgba(139, 227, 8, 0.5);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #a8ff00, #d0ff4d, #a8ff00);
+  box-shadow: 0 0 15px rgba(139, 227, 8, 0.7);
+}

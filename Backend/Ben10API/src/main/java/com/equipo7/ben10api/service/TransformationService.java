@@ -39,19 +39,38 @@ public class TransformationService {
         return transformationRepository.findByUserId(userId);
     }
 
-    public TransformationDTO getActiveTransformation() {
-        Transformation transformation = transformationRepository.findByActiveTrue()
-                .orElseThrow(() -> new NoActiveTransformationException("No active transformation found."));
+//    public TransformationDTO getActiveTransformation() {
+//        Transformation transformation = transformationRepository.findByActiveTrue()
+//                .orElseThrow(() -> new NoActiveTransformationException("No active transformation found."));
+//
+//        return new TransformationDTO(
+//                transformation.getId(),
+//                transformation.getAlien().getId(),
+//                transformation.getAlien().getName(),
+//                transformation.getInitDate(),
+//                transformation.getEndDate(),
+//                transformation.isActive()
+//        );
+//    }
+public TransformationDTO getActiveTransformation() {
+    Optional<Transformation> optionalTransformation = transformationRepository.findByActiveTrue();
 
-        return new TransformationDTO(
-                transformation.getId(),
-                transformation.getAlien().getId(),
-                transformation.getAlien().getName(),
-                transformation.getInitDate(),
-                transformation.getEndDate(),
-                transformation.isActive()
-        );
+    if (optionalTransformation.isEmpty()) {
+        return null; // ❌ Evitamos lanzar una excepción
     }
+
+    Transformation transformation = optionalTransformation.get();
+
+    return new TransformationDTO(
+            transformation.getId(),
+            transformation.getAlien().getId(),
+            transformation.getAlien().getName(),
+            transformation.getInitDate(),
+            transformation.getEndDate(),
+            transformation.isActive()
+    );
+}
+
 
     public TransformationDTO createTransformation(Long alienId) {
         User ben10 = userRepository.findByUserType(UserType.BEN_10)

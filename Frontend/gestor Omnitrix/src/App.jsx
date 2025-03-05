@@ -11,12 +11,24 @@ import Favorite from "./features/Favorites/Favorite";
 import AlienDetails from "./features/Details/AlienDetails";
 import { AliensProvider } from "./contexts/AliensContext";
 import { CommentsProvider } from "./contexts/CommentsContext";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { useEffect } from "react";
+import { useAuth } from "./contexts/AuthContext";
 
-// 🔐 Componente para proteger rutas
 function PrivateRoute({ children }) {
-  const { token } = useAuth();
-  return token ? children : <Navigate to="/login" replace />;
+  const { token, isTokenExpired, logout } = useAuth();
+
+  useEffect(() => {
+    if (!token || isTokenExpired()) {
+      logout();
+    }
+  }, [token, isTokenExpired, logout]);
+
+  if (!token || isTokenExpired()) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 }
 
 const router = createBrowserRouter([

@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
     private static final String SECRET_KEY = "y_si_lo_ves_preparate_pues_te_sorprendera_en_extraterreste_el_se_convertira"; // Change this!
-    private static final long EXPIRATION_TIME = 1000 * 60 * 10; // 10 minutes
+    private static final long EXPIRATION_TIME = 1000 * 60 * 15; // 10 minutes
 
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
