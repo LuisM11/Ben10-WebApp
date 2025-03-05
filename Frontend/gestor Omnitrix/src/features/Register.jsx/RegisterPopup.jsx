@@ -39,10 +39,10 @@ export default function RegisterPopup({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <div
         ref={popupRef}
-        className="relative min-w-[300px] rounded-lg bg-black p-8 shadow-xl border border-[#30f301] transition-transform transform scale-95 animate-fadeIn"
+        className="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl rounded-lg bg-black p-6 sm:p-8 shadow-xl border border-[#30f301] transition-transform transform scale-95 animate-fadeIn"
       >
         <button
           onClick={onClose}
@@ -51,9 +51,7 @@ export default function RegisterPopup({ onClose }) {
           ×
         </button>
   
-        <h2 className="mb-4 text-center text-2xl font-bold text-[#30f301]">
-          Registro
-        </h2>
+        <h2 className="mb-4 text-center text-xl sm:text-2xl font-bold text-[#30f301]">Registro</h2>
   
         {error && <p className="mb-4 text-center text-white">{error}</p>}
   
@@ -61,7 +59,7 @@ export default function RegisterPopup({ onClose }) {
           <input
             type="text"
             placeholder="Usuario"
-            className="w-full rounded-lg border border-[#30f301] bg-transparent p-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#30f301]"
+            className="w-full rounded-lg border border-[#30f301] bg-transparent p-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#30f301] text-sm sm:text-base"
             value={formData.username}
             onChange={(e) =>
               setFormData({ ...formData, username: e.target.value })
@@ -71,7 +69,7 @@ export default function RegisterPopup({ onClose }) {
           <input
             type="password"
             placeholder="Contraseña"
-            className="w-full rounded-lg border border-[#30f301] bg-transparent p-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#30f301]"
+            className="w-full rounded-lg border border-[#30f301] bg-transparent p-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#30f301] text-sm sm:text-base"
             value={formData.password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
@@ -81,7 +79,7 @@ export default function RegisterPopup({ onClose }) {
           <input
             type="password"
             placeholder="Confirmar Contraseña"
-            className="w-full rounded-lg border border-[#30f301] bg-transparent p-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#30f301]"
+            className="w-full rounded-lg border border-[#30f301] bg-transparent p-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#30f301] text-sm sm:text-base"
             value={formData.confirmPassword}
             onChange={(e) =>
               setFormData({ ...formData, confirmPassword: e.target.value })
@@ -90,12 +88,12 @@ export default function RegisterPopup({ onClose }) {
           />
           <button
             type="submit"
-            className="w-full rounded-lg bg-[#30f301] px-4 py-2 font-bold text-black transition-colors hover:bg-white"
+            className="w-full rounded-lg bg-[#30f301] px-4 py-2 font-bold text-black transition-colors hover:bg-green-600 text-sm sm:text-base"
           >
             Registrarse
           </button>
         </form>
       </div>
     </div>
-  );
+  );  
 }
