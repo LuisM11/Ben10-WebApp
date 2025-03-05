@@ -12,20 +12,19 @@ import { useAuth } from "../../contexts/AuthContext";
 function AlienDetails() {
   const { id } = useParams();
   const { getAlien, currentAlien, transformedAlien } = useAliens();
-  const { user } = useAuth(); // Obtiene el token y el usuario actual
+  const { user } = useAuth();
 
   useEffect(() => {
     getAlien(id);
   }, [id, getAlien]);
 
-  console.log("id", id);
-
   if (!currentAlien?.id) return <p className="text-white">Cargando...</p>;
 
   return (
     <div className="my-10 rounded bg-gray-800 p-6 text-white">
-      <div className="flex gap-4">
-        <div className="w-1/2">
+      <div className="flex flex-col gap-6 md:flex-row">
+        {/* Imagen del Alien */}
+        <div className="w-full md:w-1/2">
           <img
             src={currentAlien.imageUrl}
             alt={currentAlien.name}
@@ -40,7 +39,7 @@ function AlienDetails() {
                   {user.id === 1 ? (
                     <ButtonStopTransform />
                   ) : transformedAlien ? (
-                    <p>Ben 10 está transformado ahora mismo...</p>
+                    <p>Ben 10 está transformado ahora mismo!</p>
                   ) : (
                     "Ben descansa ahora mismo"
                   )}
@@ -51,18 +50,35 @@ function AlienDetails() {
           </div>
         </div>
 
-        <div className="flex w-1/2 flex-col items-center text-sm md:text-lg">
-          <FavoriteLogicButton alien={currentAlien} />
-          <p>{currentAlien.description}</p>
-          <ul className="list-inside list-disc text-sm text-gray-400 md:text-lg">
+        {/* Descripción y estadísticas */}
+        <div className="flex w-full flex-col items-start text-sm md:w-1/2 md:text-lg">
+          {/* Botón de favoritos centrado */}
+          <div className="flex w-full justify-center">
+            <FavoriteLogicButton alien={currentAlien} />
+          </div>
+
+          {/* Descripción */}
+          <p className="mt-4 w-full text-center">{currentAlien.description}</p>
+
+          {/* 🔥 Lista de estadísticas con barras más delgadas */}
+          <div className="mt-4 w-full space-y-3">
             {Object.entries(currentAlien.stats || {}).map(
               ([key, value], index) => (
-                <li key={index}>
-                  {key}: {value}
-                </li>
+                <div key={index}>
+                  <div className="flex justify-between text-sm font-semibold">
+                    <span className="capitalize">{key}</span>
+                    <span className="text-xs text-gray-300">{value}/100</span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-gray-700">
+                    <div
+                      className="h-full rounded-full bg-[#8be308] transition-all duration-300"
+                      style={{ width: `${value}%` }}
+                    ></div>
+                  </div>
+                </div>
               ),
             )}
-          </ul>
+          </div>
         </div>
       </div>
 

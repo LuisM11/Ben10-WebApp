@@ -56,51 +56,84 @@ function reducer(state, action) {
 }
 
 function AliensProvider({ children }) {
-  const { token } = useAuth(); // 🔥 Obtener el token del contexto de autenticación
+  const { token, isTokenExpired, logout } = useAuth(); // 🔥 Obtener el token del contexto de autenticación
   const [
     { currentAlien, transformedAlien, remainingTime, favoritos, state },
     dispatch,
   ] = useReducer(reducer, initialState);
 
   // 🔥 Función centralizada para peticiones a la API con token
-  const apiRequest = async (endpoint, options = {}) => {
-    if (!token) {
-      console.warn(
-        "🔴 Intento de solicitud sin token. Evitando la petición...",
-      );
-      return null; // Evita hacer la solicitud sin un token válido
-    }
-
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        ...options.headers,
-      },
-    });
-
-    if (!res.ok) {
-      if (res.status === 401) {
-        console.error("🔴 Token inválido o expirado. Redirigiendo al login...");
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+  const apiRequest = useCallback(
+    async (endpoint, options = {}) => {
+      if (!token || isTokenExpired()) {
+        console.warn("🔴 Token inválido o expirado. Evitando petición...");
+        logout();
+        return null;
       }
-      throw new Error(`Error en ${endpoint}: ${res.statusText}`);
-    }
 
-    return res.json();
-  };
+      const res = await fetch(`${BASE_URL}${endpoint}`, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          ...options.headers,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error en ${endpoint}: ${res.statusText}`);
+      }
+
+      return res.json();
+    },
+    [token, isTokenExpired, logout],
+  );
 
   const fetchActiveTransformation = useCallback(async () => {
+    // 🚫 Si no hay token o es inválido, no hagas la petición
+    if (!token || isTokenExpired()) {
+      console.warn(
+        "🔴 No se intentará obtener la transformación activa porque el usuario no está autenticado.",
+      );
+      dispatch({ type: "alien/resetTransformation" }); // Asegurar que el estado se resetee
+      return;
+    }
+
     try {
-      const data = await apiRequest("/transformations/active");
+      const res = await fetch(`${BASE_URL}/transformations/active`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 403) {
+        console.warn(
+          "🚫 Acceso denegado. El usuario no tiene permisos o el token es inválido.",
+        );
+        logout(); // Cierra la sesión si el token es inválido
+        dispatch({ type: "alien/resetTransformation" });
+        return;
+      }
+
+      // 📌 Si la API devuelve 404, resetea el estado y detiene la ejecución
+      if (res.status === 404) {
+        console.warn("⚠ No hay transformación activa.");
+        dispatch({ type: "alien/resetTransformation" });
+        return; // ❌ Evita que el código siga ejecutándose innecesariamente
+      }
+
+      if (!res.ok) {
+        throw new Error(`Error en /transformations/active: ${res.statusText}`);
+      }
+
+      const data = await res.json();
 
       const storedStartTime = localStorage.getItem("transformationStartTime");
       const storedDuration = localStorage.getItem("transformationDuration");
 
-      if (data.error) {
-        console.warn("⚠ No hay transformación activa.");
+      if (!data || !data.alienId) {
+        console.warn("⚠ La transformación activa no tiene un alienId válido.");
         return;
       }
 
@@ -122,7 +155,7 @@ function AliensProvider({ children }) {
     } catch (error) {
       console.error("Error al obtener la transformación activa:", error);
     }
-  }, [dispatch]);
+  }, [dispatch, token, isTokenExpired, logout, apiRequest]);
 
   useEffect(() => {
     fetchActiveTransformation(); // 🔥 Restaurar la transformación y calcular el tiempo restante
@@ -130,10 +163,16 @@ function AliensProvider({ children }) {
 
   const getAlien = useCallback(
     async function getAlien(id) {
-      if (Number(id) === currentAlien.id) return;
+      if (Number(id) === currentAlien?.id) return; // ✅ Usa opcional chaining para evitar el error
 
       try {
         const data = await apiRequest(`/aliens/${id}`);
+
+        if (!data) {
+          console.warn("⚠ No se pudo cargar el alien, el API devolvió null.");
+          return; // ✅ Evita actualizar el estado con datos inválidos
+        }
+
         dispatch({ type: "alien/loaded", payload: data });
       } catch {
         dispatch({
@@ -142,12 +181,12 @@ function AliensProvider({ children }) {
         });
       }
     },
-    [currentAlien.id, apiRequest],
+    [currentAlien?.id, apiRequest], // ✅ Opcional chaining en la dependencia
   );
 
   const transformAlien = async (alien) => {
     try {
-      const tiempoTransformacion = 100;
+      const tiempoTransformacion = 15;
       const startTime = Date.now();
 
       const data = await apiRequest(`/transformations/alien/${alien.id}`, {
@@ -166,6 +205,16 @@ function AliensProvider({ children }) {
     }
   };
 
+  const resetTransformation = useCallback(async () => {
+    try {
+      await apiRequest("/transformations/stop", { method: "POST" });
+      dispatch({ type: "alien/resetTransformation" });
+    } catch (error) {
+      console.error("Error al detener la transformación:", error);
+    }
+  }, [apiRequest]);
+
+  // 📌 Ahora `resetTransformation` ya está definido antes del `useEffect`
   useEffect(() => {
     if (transformedAlien && remainingTime > 0) {
       const timer = setInterval(() => {
@@ -176,18 +225,9 @@ function AliensProvider({ children }) {
     }
 
     if (remainingTime === 0 && transformedAlien) {
-      resetTransformation();
+      resetTransformation(); // ✅ Ahora sí puede llamarse sin error
     }
-  }, [remainingTime, transformedAlien]);
-
-  const resetTransformation = async () => {
-    try {
-      await apiRequest("/transformations/stop", { method: "POST" });
-      dispatch({ type: "alien/resetTransformation" });
-    } catch (error) {
-      console.error("Error al detener la transformación:", error);
-    }
-  };
+  }, [remainingTime, transformedAlien, resetTransformation]);
 
   const addToFavorites = async (alien) => {
     try {
@@ -213,11 +253,20 @@ function AliensProvider({ children }) {
 
     try {
       const data = await apiRequest("/users/ben10/favorites");
-      dispatch({ type: "favoritos/cargados", payload: data });
+
+      if (!data) {
+        console.warn(
+          "⚠ La API devolvió null en favoritos. Se usará un array vacío.",
+        );
+        dispatch({ type: "favoritos/cargados", payload: [] }); // ✅ Evita que favoritos sea null
+      } else {
+        dispatch({ type: "favoritos/cargados", payload: data });
+      }
     } catch (error) {
       console.error("Error al obtener favoritos:", error);
+      dispatch({ type: "favoritos/cargados", payload: [] }); // ✅ Asegura que siempre haya un array
     }
-  }, [dispatch, token]);
+  }, [dispatch, token, apiRequest]);
 
   const removeFromFavorites = async (alien_id) => {
     try {

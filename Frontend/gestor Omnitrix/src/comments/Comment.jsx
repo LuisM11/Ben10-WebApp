@@ -6,15 +6,13 @@ import { useAuth } from "../contexts/AuthContext";
 const Comment = ({ comment }) => {
   const { comments, fetchReplies, addComment, editComment, removeComment } =
     useComments();
-  const { user } = useAuth(); // Obtiene el token y el usuario actual
+  const { user } = useAuth();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
-  // Inicializamos showReplies en true si ya existen respuestas en el estado global
   const replies = comments.filter((c) => c.parentId === comment.id);
   const [showReplies, setShowReplies] = useState(replies.length > 0);
 
-  // Al activar la visualización de respuestas, si aún no se han cargado, las buscamos
   useEffect(() => {
     if (showReplies) {
       const existingReplies = comments.filter((c) => c.parentId === comment.id);
@@ -25,19 +23,19 @@ const Comment = ({ comment }) => {
   }, [showReplies, comment.id, fetchReplies, comments]);
 
   return (
-    <div className="border-b p-2">
-      <div className="flex items-center space-x-2">
+    <div className="rounded-lg border border-[#8be308] bg-gray-800 p-4 shadow-md">
+      <div className="flex items-center space-x-3">
         <img src="/user-icon.png" className="h-8 w-8 rounded-full" alt="user" />
         <div>
-          <p className="font-semibold text-black">{comment.username}</p>
-          <p className="text-sm text-gray-500">
+          <p className="font-semibold text-[#8be308]">{comment.username}</p>
+          <p className="text-sm text-gray-400">
             {new Date(comment.createdAt).toLocaleDateString()}
           </p>
         </div>
       </div>
 
       {!isEditing ? (
-        <p className="mt-2 text-black">{comment.content}</p>
+        <p className="mt-2 text-white">{comment.content}</p>
       ) : (
         <CommentForm
           submitLabel="Actualizar"
@@ -50,40 +48,54 @@ const Comment = ({ comment }) => {
       )}
 
       {/* Acciones */}
-      <div className="mt-2 flex space-x-4 text-sm text-blue-500">
-        <button onClick={() => setIsReplying(!isReplying)}>Responder</button>
-        <button onClick={() => setShowReplies((prev) => !prev)}>
+      <div className="mt-2 flex space-x-4 text-sm">
+        <button
+          className="text-[#8be308] hover:underline"
+          onClick={() => setIsReplying(!isReplying)}
+        >
+          Responder
+        </button>
+        <button
+          className="text-[#8be308] hover:underline"
+          onClick={() => setShowReplies((prev) => !prev)}
+        >
           {showReplies ? "Ocultar respuestas" : "Ver respuestas"}
         </button>
         {(user.id === 1 || comment.userId === user.id) && (
-          <button onClick={() => setIsEditing(!isEditing)}>Editar</button>
-        )}
-        {(user.id === 1 || comment.userId === user.id) && (
-          <button
-            onClick={() => removeComment(comment.id)}
-            className="text-red-500"
-          >
-            Eliminar
-          </button>
+          <>
+            <button
+              className="text-yellow-400 hover:underline"
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              Editar
+            </button>
+            <button
+              className="text-red-500 hover:underline"
+              onClick={() => removeComment(comment.id)}
+            >
+              Eliminar
+            </button>
+          </>
         )}
       </div>
 
       {/* Formulario para responder */}
       {isReplying && (
-        <CommentForm
-          submitLabel="Responder"
-          handleSubmit={(text) => {
-            addComment(text, comment.id);
-            setIsReplying(false);
-            // Al agregar una respuesta, forzamos que se muestren inmediatamente
-            setShowReplies(true);
-          }}
-        />
+        <div className="mt-2">
+          <CommentForm
+            submitLabel="Responder"
+            handleSubmit={(text) => {
+              addComment(text, comment.id);
+              setIsReplying(false);
+              setShowReplies(true);
+            }}
+          />
+        </div>
       )}
 
-      {/* Mostrar respuestas a partir del estado global */}
+      {/* Mostrar respuestas */}
       {showReplies && replies.length > 0 && (
-        <div className="ml-6 mt-2">
+        <div className="ml-6 mt-2 border-l-2 border-[#8be308] pl-4">
           {replies.map((reply) => (
             <Comment key={reply.id} comment={reply} />
           ))}
