@@ -58,7 +58,7 @@ export function CommentsProvider({ children }) {
     });
 
     if (!res.ok) {
-      if (res.status === 401) {
+      if (res.status === 403) {
         console.error("Token inválido o expirado. Redirigiendo al login...");
         localStorage.removeItem("token");
         window.location.href = "/login"; // Redirige al login si la sesión expira
@@ -97,12 +97,10 @@ export function CommentsProvider({ children }) {
     }
 
     try {
-      console.log(user);
-      console.log(content);
       const newComment = await apiRequest("/comments", {
         method: "POST",
         body: JSON.stringify({
-          userId: user.id, // Ahora usa el ID del usuario autenticado
+          userId: user.id,
           alienId: currentAlien.id,
           content,
           parentId,

@@ -4,7 +4,7 @@ function LoginLayout({ children }) {
   return (
     <div>
       <Header />
-      <main>{children}</main>
+      <main className="mt-25">{children}</main>
     </div>
   );
 }

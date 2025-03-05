@@ -1,6 +1,7 @@
 import { Outlet, useNavigation } from "react-router-dom";
 import Header from "./Header";
 import Loader from "./Loader";
+import styles from "./AppLayout.module.css";
 
 function AppLayout() {
   const navigation = useNavigation();
@@ -8,10 +9,10 @@ function AppLayout() {
   return (
     <div className="grid h-screen grid-rows-[auto_1fr]">
       {isLoading && <Loader />}
-      <Header /> {/* Header solo en /app y /favorites */}
-      <div className="">
-        <main className="mx-auto max-w-3xl">
-          <Outlet /> {/* Aquí se renderiza AppContent o Favorites */}
+      <Header />
+      <div className={styles.omnitrixbg}>
+        <main className="mx-auto mt-20 max-w-3xl">
+          <Outlet />
         </main>
       </div>
     </div>

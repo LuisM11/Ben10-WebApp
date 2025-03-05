@@ -6,7 +6,21 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(
     () => JSON.parse(localStorage.getItem("user")) || null,
   );
-  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+  const [token, setToken] = useState(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      try {
+        const payload = JSON.parse(atob(storedToken.split(".")[1]));
+        if (payload.exp * 1000 > Date.now()) {
+          return storedToken;
+        }
+      } catch (error) {
+        console.error("Error validando token almacenado:", error);
+      }
+    }
+    return "";
+  });
+
   const [userType, setUserType] = useState(
     () => localStorage.getItem("userType") || "",
   );
@@ -37,7 +51,7 @@ export function AuthProvider({ children }) {
 
       const data = await res.json();
       setToken(data.token);
-      setUser({ id: data.id, username: data.username }); // Guarda el userId globalmente
+      setUser({ id: data.id, username: data.username });
       setUserType(data.userType);
     } catch (error) {
       console.error("Error en login:", error.message);
@@ -74,9 +88,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const isTokenExpired = () => {
+    if (!token) return true;
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch (error) {
+      return true;
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, token, userType, login, logout, register }}
+      value={{ user, token, userType, login, logout, register, isTokenExpired }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,27 +1,28 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import "./Home.css";
 
 function Home() {
-  const navigate = useNavigate();
-  const [animate, setAnimate] = useState(false);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    setAnimate(true);
-  }, []);
-
-  return (
-    <div className="home-container">
-      <div className={`home-text ${animate ? "animate" : ""}`}>
-        <h1>GESTOR</h1>
-        <h1>ALIEN</h1>
-        <h1>OMNITRIX</h1>
-      </div>
-      <button className={`home-button ${animate ? "animate" : ""}`} onClick={() => navigate("/login")}>
-        Iniciar
-      </button>
-    </div>
-  );
+    return (
+        <div className="home-container">
+            <video autoPlay loop muted className="background-video">
+                <source src="/omnitrixHome.mp4" type="video/mp4"/>
+                Your browser does not support the video tag.
+            </video>
+            <div className="overlay"></div>
+            <div className="home-text">
+                <h1>
+                    <span className="full-text">GESTOR<br/>ALIEN<br/>OMNITRIX</span>
+                    <span className="short-text">G<br/>A<br/>O</span>
+                </h1>
+            </div>
+            <button className="home-button" onClick={() => navigate("/login")}>
+                <span className="button-text">Comienza ahora!</span>
+                <span className="material-symbols-outlined"> login</span>
+            </button>
+        </div>
+    );
 }
 
 export default Home;
