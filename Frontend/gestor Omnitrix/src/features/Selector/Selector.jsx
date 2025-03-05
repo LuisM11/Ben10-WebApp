@@ -36,7 +36,7 @@ function Selector({ aliens }) {
   }, [transformedAlien]);
 
   return (
-    <div className="my-10 rounded bg-gray-800 p-4 text-white">
+    <div className="my-10 rounded bg-gray-800 p-4 text-white" style={{backgroundImage: "url('/salon.jpg')"}}>
       <div className="flex flex-col items-center space-y-6">
         {/* Título */}
         {!transformedAlien && (
