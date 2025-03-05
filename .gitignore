@@ -14,6 +14,9 @@ target/
 .classpath
 .project
 .settings/
+backend.log
+backend.txt
+backend.jar
 
 # Spring Boot
 *.log

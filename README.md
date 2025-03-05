@@ -93,4 +93,4 @@ http://localhost:8080
 
 #### 📌 Para verificar que el frontend está corriendo, abre en el navegador:
 
-http://localhost:3000
+http://localhost:5173
