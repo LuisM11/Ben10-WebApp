@@ -27,10 +27,25 @@ public class TransformationController {
     }
 
 
-    @GetMapping("/active")
-    public ResponseEntity<TransformationDTO> getActiveTransformation() {
-        TransformationDTO transformation = transformationService.getActiveTransformation();
-        return ResponseEntity.ok(transformation);
+//    @GetMapping("/active")
+//    public ResponseEntity<TransformationDTO> getActiveTransformation() {
+//        TransformationDTO transformation = transformationService.getActiveTransformation();
+//        return ResponseEntity.ok(transformation);
+//    }
+@GetMapping("/active")
+public ResponseEntity<?> getActiveTransformation() {
+    TransformationDTO transformation = transformationService.getActiveTransformation();
+
+    if (transformation == null) {
+        // Opción A: Devolver 200 OK con un mensaje en el body
+        return ResponseEntity.ok().body("{\"message\": \"No active transformation found.\"}");
+
+        // Opción B: Devolver 204 No Content (descomenta esta línea si prefieres)
+        // return ResponseEntity.noContent().build();
     }
+
+    return ResponseEntity.ok(transformation);
+}
+
 
 }

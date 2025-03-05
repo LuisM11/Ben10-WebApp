@@ -97,8 +97,6 @@ export function CommentsProvider({ children }) {
     }
 
     try {
-      console.log(user);
-      console.log(content);
       const newComment = await apiRequest("/comments", {
         method: "POST",
         body: JSON.stringify({

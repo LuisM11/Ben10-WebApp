@@ -90,6 +90,15 @@ function AliensProvider({ children }) {
   );
 
   const fetchActiveTransformation = useCallback(async () => {
+    // 🚫 Si no hay token o es inválido, no hagas la petición
+    if (!token || isTokenExpired()) {
+      console.warn(
+        "🔴 No se intentará obtener la transformación activa porque el usuario no está autenticado.",
+      );
+      dispatch({ type: "alien/resetTransformation" }); // Asegurar que el estado se resetee
+      return;
+    }
+
     try {
       const res = await fetch(`${BASE_URL}/transformations/active`, {
         headers: {
@@ -97,6 +106,15 @@ function AliensProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (res.status === 403) {
+        console.warn(
+          "🚫 Acceso denegado. El usuario no tiene permisos o el token es inválido.",
+        );
+        logout(); // Cierra la sesión si el token es inválido
+        dispatch({ type: "alien/resetTransformation" });
+        return;
+      }
 
       // 📌 Si la API devuelve 404, resetea el estado y detiene la ejecución
       if (res.status === 404) {
@@ -137,8 +155,7 @@ function AliensProvider({ children }) {
     } catch (error) {
       console.error("Error al obtener la transformación activa:", error);
     }
-  }, [dispatch, token, apiRequest]); // 📌 Dependencias actualizadas
-  // 📌 Agregar `apiRequest` y `token` como dependencias
+  }, [dispatch, token, isTokenExpired, logout, apiRequest]);
 
   useEffect(() => {
     fetchActiveTransformation(); // 🔥 Restaurar la transformación y calcular el tiempo restante
